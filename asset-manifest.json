@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/Project_FS_Central/static/css/main.ba49ec77.chunk.css",
+    "main.js": "/Project_FS_Central/static/js/main.26071052.chunk.js",
+    "main.js.map": "/Project_FS_Central/static/js/main.26071052.chunk.js.map",
+    "runtime~main.js": "/Project_FS_Central/static/js/runtime~main.90acd9f0.js",
+    "runtime~main.js.map": "/Project_FS_Central/static/js/runtime~main.90acd9f0.js.map",
+    "static/js/2.b41502e9.chunk.js": "/Project_FS_Central/static/js/2.b41502e9.chunk.js",
+    "static/js/2.b41502e9.chunk.js.map": "/Project_FS_Central/static/js/2.b41502e9.chunk.js.map",
+    "index.html": "/Project_FS_Central/index.html",
+    "precache-manifest.fb75e83176b61e07120f9f1055267b5c.js": "/Project_FS_Central/precache-manifest.fb75e83176b61e07120f9f1055267b5c.js",
+    "service-worker.js": "/Project_FS_Central/service-worker.js",
+    "static/css/main.ba49ec77.chunk.css.map": "/Project_FS_Central/static/css/main.ba49ec77.chunk.css.map",
+    "static/media/logo.svg": "/Project_FS_Central/static/media/logo.ee7cd8ed.svg"
+  }
+}
