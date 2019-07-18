@@ -7,7 +7,7 @@ function Header() {
     <div>
       <nav className="navbar navbar-default">
         <div className="container">
-          <div clasName="navbar-header">
+          <div className="navbar-header">
             <ul className="nav navbar-nav">
               <li><Link to={"/login"}> Login</Link></li>
               <li><Link to={"/register"}> Register</Link></li>

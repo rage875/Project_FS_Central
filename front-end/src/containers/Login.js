@@ -35,7 +35,7 @@ class Login extends Component {
 
     console.log(`User login: ${user.username}:${user.password}, submit event`);
 
-    fetch(`${SERVER_URL}`, {
+    fetch(`${SERVER_URL}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
