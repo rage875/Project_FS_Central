@@ -1,6 +1,6 @@
-// Require express package
+// Require express package for server
 const express = require("express");
-// Require body-parser package
+// Require body-parser package for json body parsing
 const bodyParser = require("body-parser");
 
 // Get port from command line
