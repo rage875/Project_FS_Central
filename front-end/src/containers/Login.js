@@ -1,9 +1,5 @@
 import React, {Component} from "react";
 
-
-// Global fetch from json-server -w db.json
-const SERVER_URL = "http://localhost:9000"
-
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -35,7 +31,7 @@ class Login extends Component {
 
     console.log(`User login: ${user.username}:${user.password}, submit event`);
 
-    fetch(`${SERVER_URL}/login`, {
+    fetch(`${this.props.server_url}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

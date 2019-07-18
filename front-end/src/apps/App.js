@@ -21,12 +21,15 @@ class App extends Component {
   render(){
     return (
       <div>
-        <BrowserRouter history>
+        <BrowserRouter>
           <Route path={"/"} component = {Header}/>
-          <Route path={"/login"} component = {Login}/>
+          <Route
+            path={"/login"}
+            render = {()=> <Login server_url={SERVER_URL}/>}
+          />
           <Route
             path={"/register"}
-            component = {()=> <Register server_url={SERVER_URL}/>}
+            render = {()=> <Register server_url={SERVER_URL}/>}
           />
         </BrowserRouter>
       </div>
