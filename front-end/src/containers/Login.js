@@ -1,5 +1,9 @@
 import React, {Component} from "react";
 
+
+// Global fetch from json-server -w db.json
+const SERVER_URL = "http://localhost:9000"
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -26,10 +30,22 @@ class Login extends Component {
   }
 
   handleSubmit(event) {
-    const {username, password} = this.state;
-
-    console.log(`User login: ${username}:${password}, submit event`);
     event.preventDefault();
+    const user = this.state;
+
+    console.log(`User login: ${user.username}:${user.password}, submit event`);
+
+    fetch(`${SERVER_URL}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(user)
+    })
+    //.then(res => res.json())
+    .then(res => console.log(res))
+    //.then(text => console.log(text))
+    .catch(error=> console.error("Error:", error));
   }
 
   render() {
