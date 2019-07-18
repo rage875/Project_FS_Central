@@ -28,11 +28,23 @@ app.get("/", (req, res) =>{
 });
 
 // Post method
-app.post("/", (req, res) =>{
+app.post("/login", (req, res) =>{
   const username = req.body.username;
   const password = req.body.password;
 
   console.log(`POST User: ${username}, Pass: ${password}`);
+  res.status(200).end;
+})
+
+// Post method
+app.post("/register", (req, res) =>{
+  const {
+    username,
+    password,
+    confirmPassword} = req.body;
+
+  console.log(`POST User: ${username}, Pass: ${password}, ConfirmPass:${confirmPassword}`);
+
   res.status(200).end;
 })
 
