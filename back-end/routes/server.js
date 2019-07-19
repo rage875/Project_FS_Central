@@ -3,11 +3,15 @@ const express = require("express");
 // Require body-parser package for json body parsing
 const bodyParser = require("body-parser");
 
+// Require database logic module to handle db operations
+const dbLogic = require("../database/logic");
+
 // Get port from command line
 const port = process.argv[2];
 
 // Create express application
 const app = express();
+const dbLogicObj = new dbLogic();
 
 // Use body parser as middleware
 app.use(bodyParser.urlencoded({extended: true}));
@@ -29,21 +33,18 @@ app.get("/", (req, res) =>{
 
 // Post method
 app.post("/login", (req, res) =>{
-  const username = req.body.username;
-  const password = req.body.password;
+  console.log("POST: login operation");
 
-  console.log(`POST User: ${username}, Pass: ${password}`);
+  dbLogicObj.loginHandler(req.body);
+
   res.status(200).end;
 })
 
 // Post method
 app.post("/register", (req, res) =>{
-  const {
-    username,
-    password,
-    confirmPassword} = req.body;
+  console.log("POST: register operation");
 
-  console.log(`POST User: ${username}, Pass: ${password}, ConfirmPass:${confirmPassword}`);
+  dbLogicObj.registerHandler(req.body);
 
   res.status(200).end;
 })
