@@ -7,26 +7,74 @@ module.exports = class dbLogic{
       port: 27017,
       db: "users"
     }
+
+    this.setupModels();
+  }
+
+  async setupModels(){
+    // Setup user model and perform connection with database
+    this.UserModel = await setupUserModel(this.config);
+
+    this.getUsersList();
+  }
+
+  async getUsersList(){
+    await this.UserModel.find({}, (e, usersDB) => {
+      if(e) console.log;
+      if(usersDB.length){
+        usersDB.forEach(user => {
+          console.log(user.email);
+        });
+      }
+    })
+    .catch(e => console.log("Error:", e));
   }
 
   async registerHandler(user){
     console.log(`register user:${JSON.stringify(user)}`);
 
-    // Setup user model and perform connection with database
-    const UserModel = await setupUserModel(this.config);
-    const newUser = new UserModel({
-      email: user.username,
-      password: user.password
+    let boAlreadyInDB = true;
+
+    await this.UserModel.findOne({ email: user.username }, (e, userDB) => {
+      if (e) console.log;
+      if (null == userDB) {
+        boAlreadyInDB = false;
+      }
     })
+      .then(() => {
+        const userNew = new this.UserModel({
+          email: user.username,
+          password: user.password
+        })
 
-    await newUser.save()
-      .then(()=> {console.log("User registered")})
-      .catch(e => console.error("Error:", e));
-
-    process.exit(0);
+        if (false === boAlreadyInDB) {
+          userNew.save()
+            .then(() => { console.log("User registered") })
+            .catch(e => console.error("Error:", e));
+        }
+        else {
+          console.log("User already exist, try again");
+        }
+      })
+      .catch(e => console.error("Error:", e))
   }
 
-  loginHandler(user){
+  async loginHandler(user){
     console.log(`login user:${JSON.stringify(user)}`);
+
+    await this.UserModel.findOne({email:user.username}, (e, userDB) => {
+      if(e) console.log;
+      if(null != userDB){
+        console.log("user found");
+        // Check for password - hash or something here
+        if(userDB.password === user.password){
+          console.log("user password matches");
+        } else {
+          console.log("user password not matched");
+        }
+      } else {
+        console.log("user not founded");
+      }
+    }).catch(e => {console.log(e)});
   }
 }
