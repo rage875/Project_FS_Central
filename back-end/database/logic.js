@@ -42,12 +42,12 @@ module.exports = class dbLogic{
       }
     })
       .then(() => {
-        const userNew = new this.UserModel({
-          email: user.username,
-          password: user.password
-        })
-
         if (false === boAlreadyInDB) {
+          const userNew = new this.UserModel({
+            email: user.username,
+            password: user.password
+          })
+
           userNew.save()
             .then(() => { console.log("User registered") })
             .catch(e => console.error("Error:", e));
