@@ -31,18 +31,23 @@ class Register extends Component {
   handleSubmit(event) {
     event.preventDefault();
     const user = this.state;
+    const { username, password, confirmPassword } = this.state;
 
-    console.log(`User register: ${user}, submit event`);
+    console.log(`User register: ${username}, submit event`);
 
-    fetch(`${this.props.server_url}/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(user)
-    })
-    .then(res => console.log(res))
-    .catch(error=> console.error("Error:", error));
+    if (password === confirmPassword) {
+      fetch(`${this.props.server_url}/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(user)
+      })
+        .then(res => console.log(res))
+        .catch(error => console.error("Error:", error));
+    } else {
+      alert("Password and confirmPassword doesn't match");
+    }
   }
 
   render() {
