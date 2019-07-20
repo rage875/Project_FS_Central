@@ -26,6 +26,16 @@ module.exports = class dbLogic{
     .catch(e => console.log("Error:", e));
   }
 
+  async getUserInfo(user){
+    return this.UserModel.findOne({ email: user.username }, (e, userDB) => {
+      if (e) console.log;
+      if (userDB) {
+        return userDB
+      }
+    })
+    .catch(e => console.log("Error:", e));
+  }
+
   async registerHandler(user){
     console.log(`register user:${JSON.stringify(user)}`);
 
@@ -33,7 +43,7 @@ module.exports = class dbLogic{
 
     await this.UserModel.findOne({ email: user.username }, (e, userDB) => {
       if (e) console.log;
-      if (null == userDB) {
+      if (!userDB) {
         boAlreadyInDB = false;
       }
     })
@@ -77,4 +87,9 @@ module.exports = class dbLogic{
   async getUsersListHandler(){
     return await this.getUsersList();
   }
+
+  async getProfileInfoHandler(user){
+    return await this.getUserInfo(user);
+  }
+
 }

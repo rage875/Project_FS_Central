@@ -52,6 +52,17 @@ app.post("/register", (req, res) =>{
   res.status(200).end;
 })
 
+// POST method
+app.post("/profile",async (req, res) =>{
+  console.log("POST: profile operation");
+
+  const userInfo = await dbLogicObj.getProfileInfoHandler(req.body)
+    .then(res => {return res});
+
+  res.send(userInfo);
+  //res.status(200).end;
+})
+
 // Remain listening from the port
 app.listen(port, ()=>{
   console.log(`Server listening at http://localhost:${port}`);
