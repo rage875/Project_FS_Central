@@ -1,6 +1,13 @@
 import React, {Component}  from "react";
 
-class Register extends Component {
+
+class Printers extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      printers: []
+    }
+  }
 
   getList() {
     return fetch(`${this.props.server_url}/`,{
@@ -10,20 +17,29 @@ class Register extends Component {
       }
     })
       .then(res => res.json())
-      // The info from back-end arrives properly
-      .then(data => console.log(data))
       .catch(e => console.error(e));
   }
 
-  render() {
-    let printersList = "";
-    // Here the info is undefined
-    let list = this.getList()
+  loadList() {
+    return this.getList()
+      .then(printers => {
+        this.setState({
+          printers
+        })
+      });
+  }
 
-    console.log(JSON.stringify(list));
-    //printersList.map((printer, index) => (
-    //  <li key = {index}> {printer}</li>
-    //));
+  componentDidMount(){
+    this.loadList();
+  }
+
+  render() {
+    let printersListDB = this.state.printers;
+    const printersList = 
+    (undefined===printersListDB) ? "" :
+    printersListDB.map((printer) => (
+      <li key = {printer._id}> {printer.email}</li>
+    ));
 
     return (
       <div>
@@ -37,4 +53,4 @@ class Register extends Component {
 }
 
 
-export default Register;
+export default Printers;
