@@ -1,6 +1,5 @@
 import React, {Component}  from "react";
 
-
 class Printers extends Component {
   constructor(props){
     super(props);
@@ -37,8 +36,8 @@ class Printers extends Component {
     let printersListDB = this.state.printers;
     const printersList = 
     (undefined===printersListDB) ? "" :
-    printersListDB.map((printer) => (
-      <li key = {printer._id}> {printer.email}</li>
+    printersListDB.map((printer, index) => (
+      <li key = {index}> {printer.email}</li>
     ));
 
     return (
@@ -51,6 +50,5 @@ class Printers extends Component {
     )
   };
 }
-
 
 export default Printers;

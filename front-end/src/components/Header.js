@@ -11,6 +11,7 @@ function Header() {
             <ul className="nav navbar-nav">
               <li><Link to={"/login"}> Login</Link></li>
               <li><Link to={"/register"}> Register</Link></li>
+              <li><Link to={"/profile"}> Profile</Link></li>
             </ul>
           </div>
         </div>
