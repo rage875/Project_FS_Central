@@ -31,8 +31,6 @@ app.get("/", async (req, res) =>{
   userList = await dbLogicObj.getUsersListHandler()
     .then(res => {return res});
 
-  console.log("Users List:", userList);
-
   res.send(userList);
 });
 
