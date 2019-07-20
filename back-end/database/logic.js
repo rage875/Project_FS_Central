@@ -19,14 +19,19 @@ module.exports = class dbLogic{
   }
 
   async getUsersList(){
-    await this.UserModel.find({}, (e, usersDB) => {
+    return this.UserModel.find({}, (e, usersDB) => {
       if(e) console.log;
-      if(usersDB.length){
+      /*if(usersDB.length){
         usersDB.forEach(user => {
-          console.log(user.email);
-        });
-      }
+          //console.log(user.email);
+        });*/
+        return usersDB
+      
     })
+    //.then(function (res) {return res})
+    //.then(res => {return res.data;})
+    //.then(res => console.log(res))
+    //.then(res => res.json())
     .catch(e => console.log("Error:", e));
   }
 
@@ -76,5 +81,10 @@ module.exports = class dbLogic{
         console.log("user not founded");
       }
     }).catch(e => {console.log(e)});
+  }
+
+  async getUsersListHandler(){
+    console.log("get Users List Handler");
+    return await this.getUsersList();
   }
 }

@@ -26,9 +26,14 @@ app.use("*", (req, res, next) =>{
 })
 
 // Get method
-app.get("/", (req, res) =>{
-  console.log("GET methods")
-  res.send("GET method from root");
+app.get("/", async (req, res) =>{
+  console.log("GET method from root")
+  userList = await dbLogicObj.getUsersListHandler()
+    .then(res => {return res});
+
+  console.log("Users List:", userList);
+
+  res.send(userList);
 });
 
 // Post method
