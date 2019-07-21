@@ -8,14 +8,12 @@ class Profile extends Component {
       nickname: "",
       fullname: "",
       address: "",
-      // Commented just to check that profile info
-      // is printed due objects and stuff
-      //printers: [],
-      //defultPrinterInfo : {
-      //  username: "",
-      //  model: "",
-      //  specs: ""
-      //}
+      printers: [], /*index, model, specs, status*/
+      defultPrinterInfo : {
+        username: "",
+        model: "",
+        specs: ""
+      }
     }
   };
 
@@ -49,22 +47,38 @@ class Profile extends Component {
     this.loadUserInfo();
   }
 
-  render (){
-    const profileInfoDB = this.state;
+  createProfileInfoVirtDOM(profileInfoDB){
     let profileInfo = [];
+
     if(profileInfoDB.username){
     for (let key in profileInfoDB){
       if(profileInfoDB.hasOwnProperty(key)){
         //console.log(key + " -> " + profileInfoDB[key]);
-        profileInfo.push(profileInfoDB[key]);
+        if("printers" === key){
+          // Handle arrays
+          profileInfoDB[key].forEach(printer =>{
+            console.log("- Index:" + printer.index + "status:" + printer.status);
+          })
+        } else if("defultPrinterInfo" === key){
+          console.log("-- Username:" + profileInfoDB[key].username);
+        } else {
+          profileInfo.push(profileInfoDB[key]);
+        }
       }
     }}
+
     console.log(profileInfo);
 
     profileInfo.map((elem, index) => (
       <li key = {index}> {elem}</li>
     ));
 
+    return profileInfo;
+  }
+
+  render (){
+    const profileInfo = this.createProfileInfoVirtDOM(
+      this.state);
       // Despues realizar con boton el delete
 
     return (
