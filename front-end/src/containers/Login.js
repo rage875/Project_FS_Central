@@ -1,12 +1,14 @@
 import React, {Component} from "react";
+import { Redirect } from"react-router-dom";
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       username: "",
-      password: ""
-  };
+      password: "",
+      redirect: false,
+    };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -38,14 +40,35 @@ class Login extends Component {
       },
       body: JSON.stringify(user)
     })
-    //.then(res => res.json())
-    .then(res => console.log(res))
-    //.then(text => console.log(text))
-    .catch(error=> console.error("Error:", error));
+    .then(res => res.json())
+    .then(data => this.handleResponse(data))
+    .catch(error=> console.log("Error:", error));
+  }
+
+  handleResponse(data){
+    console.log("Update profile module with:", data.email);
+    this.setState({
+      redirect: true
+    })
+  }
+
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return (
+        <Redirect to={{
+          pathname: "/profile",
+          state: { username: this.state.username }
+        }} />
+      )
+    }
   }
 
   render() {
     return (
+      <div> 
+      {
+        this.renderRedirect()
+      }
       <form onSubmit={this.handleSubmit}>
         <label>
           username:
@@ -68,6 +91,7 @@ class Login extends Component {
           value="login"
           disabled={!this.validateForm()}/>
       </form>
+      </div>
     );
   }
 }
