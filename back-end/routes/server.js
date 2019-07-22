@@ -29,35 +29,30 @@ app.use("*", (req, res, next) =>{
 app.get("/", async (req, res) =>{
   console.log("GET method from root")
   userList = await dbLogicObj.getUsersListHandler()
-    .then(res => {return res});
 
   res.send(userList);
 });
 
 // Post method
-app.post("/login", (req, res) =>{
+app.post("/login", async (req, res) =>{
   console.log("POST: login operation");
+  user = await dbLogicObj.loginHandler(req.body)
 
-  dbLogicObj.loginHandler(req.body);
-
-  res.status(200).end;
+  res.send(user);
 })
 
 // Post method
 app.post("/register", (req, res) =>{
   console.log("POST: register operation");
-
   dbLogicObj.registerHandler(req.body);
 
   res.status(200).end;
 })
 
 // POST method
-app.post("/profile",async (req, res) =>{
+app.post("/profile", async (req, res) =>{
   console.log("POST: profile operation");
-
   const userInfo = await dbLogicObj.getProfileInfoHandler(req.body)
-    .then(res => {return res});
 
   res.send(userInfo);
   //res.status(200).end;

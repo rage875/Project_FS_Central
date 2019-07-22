@@ -21,7 +21,6 @@ module.exports = class dbLogic{
   async getUsersList(){
     return this.UserModel.find({}, (e, usersDB) => {
       if(e) console.log;
-        return usersDB;
     })
     .catch(e => console.log("Error:", e));
   }
@@ -67,21 +66,19 @@ module.exports = class dbLogic{
 
   async loginHandler(user){
     console.log(`login user:${JSON.stringify(user)}`);
-
-    await this.UserModel.findOne({email:user.username}, (e, userDB) => {
+    let match = false;
+    return await this.UserModel.findOne({
+      email:user.username, password:user.password
+    }, (e, userDB) => {
       if(e) console.log;
       if(null != userDB){
-        console.log("user found");
-        // Check for password - hash or something here
-        if(userDB.password === user.password){
-          console.log("user password matches");
-        } else {
-          console.log("user password not matched");
-        }
+        console.log("user found and password match");
       } else {
         console.log("user not founded");
       }
-    }).catch(e => {console.log(e)});
+    })
+    // ? How to modify the res within then properly
+    .catch(e => {console.log(e)});
   }
 
   async getUsersListHandler(){
