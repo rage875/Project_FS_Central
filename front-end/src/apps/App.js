@@ -20,6 +20,7 @@ class App extends Component {
     }
   }
   render(){
+
     return (
       <div>
         <BrowserRouter>
@@ -32,7 +33,7 @@ class App extends Component {
             render = {()=> <Login server_url={SERVER_URL}/>}
           />
           <Route
-            exact path={"/profile"}
+            path={"/profile/:username"}
             render = {()=> <Profile server_url={SERVER_URL}/>}
           />
           <Route

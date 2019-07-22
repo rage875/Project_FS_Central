@@ -15,6 +15,9 @@ class Profile extends Component {
         specs: ""
       }
     }
+
+    console.log("[Profile]", this.props.match);
+    console.log("[Profile]", this.props.location);
   };
 
   getUserInfo(user) {
@@ -44,6 +47,8 @@ class Profile extends Component {
   }
 
   componentDidMount(){
+    const {match: {params}} = this.props
+    console.log(params)
     this.loadUserInfo();
   }
 

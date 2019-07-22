@@ -46,7 +46,7 @@ class Login extends Component {
   }
 
   handleResponse(data){
-    console.log("Update profile module with:", data.email);
+    console.log("[Login] Update profile module with:", data.email);
     this.setState({
       redirect: true
     })
@@ -56,7 +56,7 @@ class Login extends Component {
     if (this.state.redirect) {
       return (
         <Redirect to={{
-          pathname: "/profile",
+          pathname: `/profile/${this.state.username}`,
           state: { username: this.state.username }
         }} />
       )
