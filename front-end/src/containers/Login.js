@@ -55,7 +55,7 @@ class Login extends Component {
   renderRedirect = () => {
     if (this.state.redirect) {
       return (
-        <Redirect to={{
+        <Redirect push to={{
           pathname: `/profile/${this.state.username}`,
           state: { username: this.state.username }
         }} />

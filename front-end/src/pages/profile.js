@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React from "react";
 
 // Components
 import Header from "../components/Header";
@@ -6,16 +6,14 @@ import Header from "../components/Header";
 // Containers
 import MainContainer from "../containers/Profile";
 
-class ProfilePage extends Component{
-  render(){
-
-      return(
-        <div>
-          <Header type="profile" />
-          <MainContainer server_url={this.props.server_url} />
-        </div>
-        )
-    }
+function ProfilePage(props) {
+  console.log("[Profilepage]", props)
+  return (
+    <div>
+       <Header type="profile" />
+      <MainContainer server_url={props.server_url} params={props.params}/>
+    </div>
+  )
 }
 
 export default ProfilePage;

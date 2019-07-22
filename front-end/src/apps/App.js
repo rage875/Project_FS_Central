@@ -34,7 +34,7 @@ class App extends Component {
           />
           <Route
             path={"/profile/:username"}
-            render = {()=> <Profile server_url={SERVER_URL}/>}
+            render = {({ match })=> <Profile server_url={SERVER_URL} params={match.params}/>}
           />
           <Route
             exact path={"/register"}

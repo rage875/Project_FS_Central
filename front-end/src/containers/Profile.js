@@ -16,8 +16,7 @@ class Profile extends Component {
       }
     }
 
-    console.log("[Profile]", this.props.match);
-    console.log("[Profile]", this.props.location);
+    console.log("[Profile]", this.props.params);
   };
 
   getUserInfo(user) {
@@ -35,7 +34,7 @@ class Profile extends Component {
 
   loadUserInfo() {
     const user = {
-      username: "pepe@g"
+      username: this.props.params.username,
     }
 
     return this.getUserInfo(user)
@@ -47,8 +46,6 @@ class Profile extends Component {
   }
 
   componentDidMount(){
-    const {match: {params}} = this.props
-    console.log(params)
     this.loadUserInfo();
   }
 
@@ -72,7 +69,7 @@ class Profile extends Component {
       }
     }}
 
-    console.log(profileInfo);
+    console.log("Profileinfo:", profileInfo);
 
     profileInfo.map((elem, index) => (
       <li key = {index}> {elem}</li>
