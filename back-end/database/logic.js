@@ -1,7 +1,8 @@
 const setupUserModel = require("../models/users");
 
-module.exports = class dbLogic{
-  constructor(){
+///////////////////////////////////////////////////////////////////////////////
+module.exports = class dbLogic {
+  constructor() {
     this.config = {
       host: "localhost",
       port: 27017,
@@ -11,31 +12,35 @@ module.exports = class dbLogic{
     this.setupModels();
   }
 
-  async setupModels(){
+  ///////////////////////////////////////////////////////////////////////////////
+  async setupModels() {
     // Setup user model and perform connection with database
     this.UserModel = await setupUserModel(this.config);
 
     this.getUsersList();
   }
 
-  async getUsersList(){
+  ///////////////////////////////////////////////////////////////////////////////
+  async getUsersList() {
     return this.UserModel.find({}, (e, usersDB) => {
-      if(e) console.log;
+      if (e) console.log;
     })
-    .catch(e => console.log("Error:", e));
+      .catch(e => console.log("Error:", e));
   }
 
-  async getUserInfo(user){
+  ///////////////////////////////////////////////////////////////////////////////
+  async getUserInfo(user) {
     return this.UserModel.findOne({ email: user.username }, (e, userDB) => {
       if (e) console.log;
       if (userDB) {
         return userDB
       }
     })
-    .catch(e => console.log("Error:", e));
+      .catch(e => console.log("Error:", e));
   }
 
-  async registerHandler(user){
+  ///////////////////////////////////////////////////////////////////////////////
+  async registerHandler(user) {
     console.log(`register user:${JSON.stringify(user)}`);
 
     let boAlreadyInDB = true;
@@ -64,29 +69,31 @@ module.exports = class dbLogic{
       .catch(e => console.error("Error:", e))
   }
 
-  async loginHandler(user){
+  ///////////////////////////////////////////////////////////////////////////////
+  async loginHandler(user) {
     console.log(`login user:${JSON.stringify(user)}`);
     let match = false;
     return await this.UserModel.findOne({
-      email:user.username, password:user.password
+      email: user.username, password: user.password
     }, (e, userDB) => {
-      if(e) console.log;
-      if(null != userDB){
+      if (e) console.log;
+      if (null != userDB) {
         console.log("user found and password match");
       } else {
         console.log("user not founded");
       }
     })
-    // ? How to modify the res within then properly
-    .catch(e => {console.log(e)});
+      // ? How to modify the res within then properly
+      .catch(e => { console.log(e) });
   }
 
-  async getUsersListHandler(){
+  ///////////////////////////////////////////////////////////////////////////////
+  async getUsersListHandler() {
     return await this.getUsersList();
   }
 
-  async getProfileInfoHandler(user){
+  ///////////////////////////////////////////////////////////////////////////////
+  async getProfileInfoHandler(user) {
     return await this.getUserInfo(user);
   }
-
 }

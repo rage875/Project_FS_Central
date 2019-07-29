@@ -1,5 +1,6 @@
 const setupDB = require('../database/db');
 
+///////////////////////////////////////////////////////////////////////////////
 module.exports = async function setupUserModel(config) {
   const mongoose = await setupDB(config);
   const Schema = mongoose.Schema;

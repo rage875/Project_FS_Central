@@ -2,11 +2,12 @@
 const Mongoose = require("mongoose");
 let mongoose = null;
 
+///////////////////////////////////////////////////////////////////////////////
 module.exports = function setupDB(config) {
-    if(!mongoose) {
+    if (!mongoose) {
         mongoose = Mongoose.connect(
             `mongodb://${config.host}:${config.port}/${config.db}`,
-            {useNewUrlParser: true});
+            { useNewUrlParser: true });
     }
 
     return mongoose;

@@ -25,6 +25,7 @@ app.use("*", (req, res, next) =>{
   next();
 })
 
+///////////////////////////////////////////////////////////////////////////////
 // Get method
 app.get("/", async (req, res) =>{
   console.log("GET method from root")
@@ -33,6 +34,7 @@ app.get("/", async (req, res) =>{
   res.send(userList);
 });
 
+///////////////////////////////////////////////////////////////////////////////
 // Post method
 app.post("/login", async (req, res) =>{
   console.log("POST: login operation");
@@ -41,6 +43,7 @@ app.post("/login", async (req, res) =>{
   res.send(user);
 })
 
+///////////////////////////////////////////////////////////////////////////////
 // Post method
 app.post("/register", (req, res) =>{
   console.log("POST: register operation");
@@ -49,7 +52,8 @@ app.post("/register", (req, res) =>{
   res.status(200).end;
 })
 
-// POST method
+///////////////////////////////////////////////////////////////////////////////
+// Post method
 app.post("/profile", async (req, res) =>{
   console.log("POST: profile operation");
   const userInfo = await dbLogicObj.getProfileInfoHandler(req.body)
@@ -58,6 +62,7 @@ app.post("/profile", async (req, res) =>{
   //res.status(200).end;
 })
 
+///////////////////////////////////////////////////////////////////////////////
 // Remain listening from the port
 app.listen(port, ()=>{
   console.log(`Server listening at http://localhost:${port}`);
