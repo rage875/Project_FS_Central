@@ -6,16 +6,38 @@ module.exports = async function setupUserModel(config) {
   const Schema = mongoose.Schema;
 
   let User = new Schema({
-    email: String,
-    password: String
+    private: {
+      email: { type: String, lowercase: true },
+      password: String,
+      fullname: String,
+      birth: Date,
+      defultPrinterInfo: {
+        username: String,
+        model: String,
+        specs: String,
+      }
+    },
+    public: {
+      username: String,
+      address: String,
+      printers: [{
+        index: Number,
+        model: String,
+        specs: String,
+        status: {
+          type: String,
+          enum: [
+            "Available", "Ready", "Busy", "Not Available",
+          ],
+        },
+      }],
+    },
   });
 
-  // Arrow function not allowed due global scope properties
   User.pre('save', function (next) {
     console.log("Pre save middleware");
-    console.log(this);
 
-    if (!this.email) {
+    if (!this.private.email) {
       let err = new Error("Error email not exist");
       next(err);
     }

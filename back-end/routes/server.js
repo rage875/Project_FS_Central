@@ -29,22 +29,28 @@ app.use("*", (req, res, next) =>{
 // Get method
 app.get("/", async (req, res) =>{
   console.log("GET method from root")
-  userList = await dbLogicObj.getUsersListHandler()
 
-  res.send(userList);
+  const type = "public";
+  const usersListDB = await dbLogicObj.getUsersListHandler(type);
+
+  res.send(JSON.stringify(usersListDB));
 });
 
 ///////////////////////////////////////////////////////////////////////////////
-// Post method
-app.post("/login", async (req, res) =>{
+// Post method - Login
+app.post("/login", async (req, res) => {
   console.log("POST: login operation");
-  user = await dbLogicObj.loginHandler(req.body)
 
-  res.send(user);
+  let userInfo = { username: "" };
+  userDB = await dbLogicObj.loginHandler(req.body);
+
+  if (userDB) { userInfo.username = userDB.email }
+
+  res.send(JSON.stringify(userInfo));
 })
 
 ///////////////////////////////////////////////////////////////////////////////
-// Post method
+// Post method - Register
 app.post("/register", (req, res) =>{
   console.log("POST: register operation");
   dbLogicObj.registerHandler(req.body);
@@ -53,13 +59,12 @@ app.post("/register", (req, res) =>{
 })
 
 ///////////////////////////////////////////////////////////////////////////////
-// Post method
+// Post method - Profile
 app.post("/profile", async (req, res) =>{
   console.log("POST: profile operation");
   const userInfo = await dbLogicObj.getProfileInfoHandler(req.body)
 
   res.send(userInfo);
-  //res.status(200).end;
 })
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -17,6 +17,11 @@ module.exports = class dbLogic {
     // Setup user model and perform connection with database
     this.UserModel = await setupUserModel(this.config);
 
+    // Just for reset DB
+    /*this.UserModel.remove({}, function(e){
+      console.log("All collection removed");
+    })*/
+
     this.getUsersList();
   }
 
@@ -54,8 +59,22 @@ module.exports = class dbLogic {
       .then(() => {
         if (false === boAlreadyInDB) {
           const userNew = new this.UserModel({
-            email: user.username,
-            password: user.password
+            private: {
+              email: user.username,
+              password: user.password,
+              fullname: "",
+              birth: "",
+              defultPrinterInfo: {
+                username: "",
+                model: "",
+                specs: ""
+              }
+            },
+            public: {
+              username: user.username.split("@", 1).toString(),
+              address: "",
+              printers: []
+            }
           })
 
           userNew.save()
@@ -72,15 +91,15 @@ module.exports = class dbLogic {
   ///////////////////////////////////////////////////////////////////////////////
   async loginHandler(user) {
     console.log(`login user:${JSON.stringify(user)}`);
-    let match = false;
+
     return await this.UserModel.findOne({
-      email: user.username, password: user.password
+      private: {email: user.username}, private: {password: user.password}
     }, (e, userDB) => {
       if (e) console.log;
       if (null != userDB) {
         console.log("user found and password match");
       } else {
-        console.log("user not founded");
+        console.log("user not found");
       }
     })
       // ? How to modify the res within then properly
@@ -88,8 +107,23 @@ module.exports = class dbLogic {
   }
 
   ///////////////////////////////////////////////////////////////////////////////
-  async getUsersListHandler() {
-    return await this.getUsersList();
+  async getUsersListHandler(type) {
+    const usersListDB = await this.getUsersList();
+    let usersList = [];
+
+    usersListDB.forEach(user => {
+      //console.log(user)
+      if ("public" == type) {
+        usersList.push(user.public);
+      }
+      else {
+        usersList.push(user.private);
+      }
+    });
+
+    console.log(`[logic] ${JSON.stringify(usersList)}`);
+
+    return usersList;
   }
 
   ///////////////////////////////////////////////////////////////////////////////
