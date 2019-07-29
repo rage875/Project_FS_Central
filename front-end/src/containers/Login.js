@@ -51,10 +51,14 @@ class Login extends Component {
 
   ///////////////////////////////////////////////////////////////////////////////
   handleResponse(data) {
-    console.log("[Login] Update profile module with:", data.email);
-    this.setState({
-      redirect: true
-    })
+    console.log("[Login] Update profile module with:", data.username);
+    if ("" !== data.username) {
+      this.setState({
+        redirect: true
+      })
+    } else {
+      console.log("[Login] User not found");
+    }
   }
 
   ///////////////////////////////////////////////////////////////////////////////

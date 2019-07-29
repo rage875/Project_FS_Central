@@ -84,7 +84,7 @@ class Register extends Component {
         </label>
         <input
           type="submit"
-          value="login"
+          value="submit"
           disabled={!this.validateForm()} />
       </form>
     );

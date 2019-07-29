@@ -5,16 +5,32 @@ class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: "",
-      nickname: "",
-      fullname: "",
-      address: "",
-      printers: [], /*index, model, specs, status*/
-      defultPrinterInfo: {
-        username: "",
-        model: "",
-        specs: ""
-      }
+      private: {
+        email: { type: String, lowercase: true },
+        password: String,
+        fullname: String,
+        birth: Date,
+        defultPrinterInfo: {
+          username: String,
+          model: String,
+          specs: String,
+        }
+      },
+      public: {
+        username: String,
+        address: String,
+        printers: [{
+          index: Number,
+          model: String,
+          specs: String,
+          status: {
+            type: String,
+            enum: [
+              "Available", "Ready", "Busy", "Not Available",
+            ],
+          },
+        }],
+      },
     }
 
     console.log("[Profile]", this.props.params);
@@ -58,10 +74,15 @@ class Profile extends Component {
     let profileInfo = [];
 
     if (profileInfoDB.username) {
-      for (let key in profileInfoDB) {
-        if (profileInfoDB.hasOwnProperty(key)) {
-          //console.log(key + " -> " + profileInfoDB[key]);
-          if ("printers" === key) {
+      for (let ikey in profileInfoDB) {
+        if (profileInfoDB.hasOwnProperty(ikey)) {
+          console.log(ikey + " -> " + profileInfoDB[ikey]);
+          for (let jkey in profileInfoDB[ikey]) {
+            if (profileInfoDB[ikey].hasOwnProperty(jkey)) {
+              console.log(`${ikey}: ${jkey} -> ${profileInfoDB[ikey][jkey]}`);
+            }
+          }
+          /*if ("printers" === key) {
             // Handle arrays
             profileInfoDB[key].forEach(printer => {
               console.log("- Index:" + printer.index + "status:" + printer.status);
@@ -70,7 +91,7 @@ class Profile extends Component {
             console.log("-- Username:" + profileInfoDB[key].username);
           } else {
             profileInfo.push(profileInfoDB[key]);
-          }
+          }*/
         }
       }
     }

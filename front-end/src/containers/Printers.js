@@ -39,10 +39,11 @@ class Printers extends Component {
   ///////////////////////////////////////////////////////////////////////////////
   render() {
     let printersListDB = this.state.printers;
+    console.log(`[Printers] ${JSON.stringify(printersListDB)}`);
     const printersList =
       (undefined === printersListDB) ? "" :
         printersListDB.map((printer, index) => (
-          <li key={index}> {printer.email}</li>
+          <li key={index}> {printer.username}</li>
         ));
 
     return (
