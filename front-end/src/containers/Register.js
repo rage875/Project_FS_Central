@@ -1,5 +1,6 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
+///////////////////////////////////////////////////////////////////////////////
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -7,27 +8,30 @@ class Register extends Component {
       username: "",
       password: "",
       confirmPassword: ""
-  };
+    };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  ///////////////////////////////////////////////////////////////////////////////
   validateForm() {
-    const {username, password, confirmPassword} = this.state;
+    const { username, password, confirmPassword } = this.state;
 
-    return (0 < username.length && 
-            0 < password.length &&
-            0 < confirmPassword);
+    return (0 < username.length &&
+      0 < password.length &&
+      0 < confirmPassword);
   }
 
+  ///////////////////////////////////////////////////////////////////////////////
   handleChange(event) {
-    const {name, value} = event.target;
+    const { name, value } = event.target;
     this.setState({
       [name]: value
     });
   }
 
+  ///////////////////////////////////////////////////////////////////////////////
   handleSubmit(event) {
     event.preventDefault();
     const user = this.state;
@@ -50,12 +54,13 @@ class Register extends Component {
     }
   }
 
+  ///////////////////////////////////////////////////////////////////////////////
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
         <label>
           username:
-          <input 
+          <input
             type="email"
             name="username"
             value={this.state.value}
@@ -63,7 +68,7 @@ class Register extends Component {
         </label>
         <label>
           password:
-          <input 
+          <input
             type="text"
             name="password"
             value={this.state.value}
@@ -71,7 +76,7 @@ class Register extends Component {
         </label>
         <label>
           confirmPassword:
-          <input 
+          <input
             type="text"
             name="confirmPassword"
             value={this.state.value}
@@ -80,7 +85,7 @@ class Register extends Component {
         <input
           type="submit"
           value="login"
-          disabled={!this.validateForm()}/>
+          disabled={!this.validateForm()} />
       </form>
     );
   }

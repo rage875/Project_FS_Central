@@ -1,7 +1,8 @@
-import React, {Component}  from "react";
+import React, { Component } from "react";
 
+///////////////////////////////////////////////////////////////////////////////
 class Profile extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       username: "",
@@ -9,7 +10,7 @@ class Profile extends Component {
       fullname: "",
       address: "",
       printers: [], /*index, model, specs, status*/
-      defultPrinterInfo : {
+      defultPrinterInfo: {
         username: "",
         model: "",
         specs: ""
@@ -19,6 +20,7 @@ class Profile extends Component {
     console.log("[Profile]", this.props.params);
   };
 
+  ///////////////////////////////////////////////////////////////////////////////
   getUserInfo(user) {
     console.log(`request info from user: ${user.username}`);
     return fetch(`${this.props.server_url}/profile`, {
@@ -32,6 +34,7 @@ class Profile extends Component {
       .catch(error => console.error("Error:", error));
   }
 
+  ///////////////////////////////////////////////////////////////////////////////
   loadUserInfo() {
     const user = {
       username: this.props.params.username,
@@ -45,48 +48,52 @@ class Profile extends Component {
       });
   }
 
-  componentDidMount(){
+  ///////////////////////////////////////////////////////////////////////////////
+  componentDidMount() {
     this.loadUserInfo();
   }
 
-  createProfileInfoVirtDOM(profileInfoDB){
+  ///////////////////////////////////////////////////////////////////////////////
+  createProfileInfoVirtDOM(profileInfoDB) {
     let profileInfo = [];
 
-    if(profileInfoDB.username){
-    for (let key in profileInfoDB){
-      if(profileInfoDB.hasOwnProperty(key)){
-        //console.log(key + " -> " + profileInfoDB[key]);
-        if("printers" === key){
-          // Handle arrays
-          profileInfoDB[key].forEach(printer =>{
-            console.log("- Index:" + printer.index + "status:" + printer.status);
-          })
-        } else if("defultPrinterInfo" === key){
-          console.log("-- Username:" + profileInfoDB[key].username);
-        } else {
-          profileInfo.push(profileInfoDB[key]);
+    if (profileInfoDB.username) {
+      for (let key in profileInfoDB) {
+        if (profileInfoDB.hasOwnProperty(key)) {
+          //console.log(key + " -> " + profileInfoDB[key]);
+          if ("printers" === key) {
+            // Handle arrays
+            profileInfoDB[key].forEach(printer => {
+              console.log("- Index:" + printer.index + "status:" + printer.status);
+            })
+          } else if ("defultPrinterInfo" === key) {
+            console.log("-- Username:" + profileInfoDB[key].username);
+          } else {
+            profileInfo.push(profileInfoDB[key]);
+          }
         }
       }
-    }}
+    }
 
     console.log("Profileinfo:", profileInfo);
 
     profileInfo.map((elem, index) => (
-      <li key = {index}> {elem}</li>
+      <li key={index}> {elem}</li>
     ));
 
     return profileInfo;
   }
 
-  render (){
+  ///////////////////////////////////////////////////////////////////////////////
+  render() {
     const profileInfo = this.createProfileInfoVirtDOM(
       this.state);
-      // Despues realizar con boton el delete
+    // Despues realizar con boton el delete
 
     return (
       <div>
         <h2> Profile's info</h2>
-        { 
+        {
           profileInfo
         }
       </div>

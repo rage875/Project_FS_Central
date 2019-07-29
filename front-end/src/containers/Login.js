@@ -1,6 +1,7 @@
-import React, {Component} from "react";
-import { Redirect } from"react-router-dom";
+import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 
+///////////////////////////////////////////////////////////////////////////////
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -14,19 +15,22 @@ class Login extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  ///////////////////////////////////////////////////////////////////////////////
   validateForm() {
-    const {username,password} = this.state;
+    const { username, password } = this.state;
 
     return (0 < username.length && 0 < password.length);
   }
 
+  ///////////////////////////////////////////////////////////////////////////////
   handleChange(event) {
-    const {name, value} = event.target;
+    const { name, value } = event.target;
     this.setState({
       [name]: value
     });
   }
 
+  ///////////////////////////////////////////////////////////////////////////////
   handleSubmit(event) {
     event.preventDefault();
     const user = this.state;
@@ -40,18 +44,20 @@ class Login extends Component {
       },
       body: JSON.stringify(user)
     })
-    .then(res => res.json())
-    .then(data => this.handleResponse(data))
-    .catch(error=> console.log("Error:", error));
+      .then(res => res.json())
+      .then(data => this.handleResponse(data))
+      .catch(error => console.log("Error:", error));
   }
 
-  handleResponse(data){
+  ///////////////////////////////////////////////////////////////////////////////
+  handleResponse(data) {
     console.log("[Login] Update profile module with:", data.email);
     this.setState({
       redirect: true
     })
   }
 
+  ///////////////////////////////////////////////////////////////////////////////
   renderRedirect = () => {
     if (this.state.redirect) {
       return (
@@ -63,34 +69,35 @@ class Login extends Component {
     }
   }
 
+  ///////////////////////////////////////////////////////////////////////////////
   render() {
     return (
-      <div> 
-      {
-        this.renderRedirect()
-      }
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          username:
-          <input 
-            type="email"
-            name="username"
-            value={this.state.value}
-            onChange={this.handleChange} />
-        </label>
-        <label>
-          password:
-          <input 
-            type="text"
-            name="password"
-            value={this.state.value}
-            onChange={this.handleChange} />
-        </label>
-        <input
-          type="submit"
-          value="login"
-          disabled={!this.validateForm()}/>
-      </form>
+      <div>
+        {
+          this.renderRedirect()
+        }
+        <form onSubmit={this.handleSubmit}>
+          <label>
+            username:
+          <input
+              type="email"
+              name="username"
+              value={this.state.value}
+              onChange={this.handleChange} />
+          </label>
+          <label>
+            password:
+          <input
+              type="text"
+              name="password"
+              value={this.state.value}
+              onChange={this.handleChange} />
+          </label>
+          <input
+            type="submit"
+            value="login"
+            disabled={!this.validateForm()} />
+        </form>
       </div>
     );
   }

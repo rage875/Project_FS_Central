@@ -1,10 +1,10 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
-
-function createHeaderVirtDOM(type){
-  if("root"===type){
-    return(
+///////////////////////////////////////////////////////////////////////////////
+function createHeaderVirtDOM(type) {
+  if ("root" === type) {
+    return (
       <nav className="navbar navbar-default">
         <div className="container">
           <div className="navbar-header">
@@ -18,7 +18,7 @@ function createHeaderVirtDOM(type){
       </nav>
     )
   } else {
-    return(
+    return (
       <nav className="navbar navbar-default">
         <div className="container">
           <div className="navbar-header">
@@ -32,9 +32,10 @@ function createHeaderVirtDOM(type){
   }
 }
 
+///////////////////////////////////////////////////////////////////////////////
 function Header(props) {
   const Header = createHeaderVirtDOM(props.type);
-  return(
+  return (
     <div>
       {Header}
     </div>

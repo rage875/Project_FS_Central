@@ -13,12 +13,15 @@ import Profile from "../pages/profile";
 // Global fetch from json-server -w db.json
 const SERVER_URL = "http://localhost:9000"
 
+///////////////////////////////////////////////////////////////////////////////
 class App extends Component {
   constructor (props) {
     super(props)
     this.state = {
     }
   }
+
+  ///////////////////////////////////////////////////////////////////////////////
   render(){
 
     return (
