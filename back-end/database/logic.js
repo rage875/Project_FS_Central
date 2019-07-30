@@ -35,7 +35,7 @@ module.exports = class dbLogic {
 
   ///////////////////////////////////////////////////////////////////////////////
   async getUserInfo(user) {
-    return this.UserModel.findOne({ email: user.username }, (e, userDB) => {
+    return this.UserModel.findOne({ "public.username": user.username }, (e, userDB) => {
       if (e) console.log;
       if (userDB) {
         return userDB
@@ -93,7 +93,7 @@ module.exports = class dbLogic {
     console.log(`login user:${JSON.stringify(user)}`);
 
     return await this.UserModel.findOne({
-      private: {email: user.username}, private: {password: user.password}
+      "public.username": user.username, "private.password": user.password
     }, (e, userDB) => {
       if (e) console.log;
       if (null != userDB) {
@@ -113,7 +113,7 @@ module.exports = class dbLogic {
 
     usersListDB.forEach(user => {
       //console.log(user)
-      if ("public" == type) {
+      if ("public" === type) {
         usersList.push(user.public);
       }
       else {
@@ -128,6 +128,17 @@ module.exports = class dbLogic {
 
   ///////////////////////////////////////////////////////////////////////////////
   async getProfileInfoHandler(user) {
-    return await this.getUserInfo(user);
+    let userProfileDB = await this.getUserInfo(user);
+    let userProfile;
+
+    console.log(`[logic] Profile: ${user}`);
+
+    if ("public" === user.accessType) {
+      userProfile = userProfileDB.public;
+    } else if ("private" === user.accessType) {
+      userProfile = userProfileDB;
+    }
+
+    return userProfile;
   }
 }

@@ -14,10 +14,10 @@ const app = express();
 const dbLogicObj = new dbLogic();
 
 // Use body parser as middleware
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 // Add header for for 'Access-Control-Allow-Origin
-app.use("*", (req, res, next) =>{
+app.use("*", (req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET", "POST");
   res.header("Access-Control-Allow-Headers",
@@ -27,7 +27,7 @@ app.use("*", (req, res, next) =>{
 
 ///////////////////////////////////////////////////////////////////////////////
 // Get method
-app.get("/", async (req, res) =>{
+app.get("/", async (req, res) => {
   console.log("GET method from root")
 
   const type = "public";
@@ -42,16 +42,20 @@ app.post("/login", async (req, res) => {
   console.log("POST: login operation");
 
   let userInfo = { username: "" };
-  userDB = await dbLogicObj.loginHandler(req.body);
+  const userDB = await dbLogicObj.loginHandler(req.body);
 
-  if (userDB) { userInfo.username = userDB.email }
+  if (userDB) {
+    userInfo.username = userDB.public.username;
+  }
+
+  console.log(JSON.stringify(userInfo))
 
   res.send(JSON.stringify(userInfo));
 })
 
 ///////////////////////////////////////////////////////////////////////////////
 // Post method - Register
-app.post("/register", (req, res) =>{
+app.post("/register", (req, res) => {
   console.log("POST: register operation");
   dbLogicObj.registerHandler(req.body);
 
@@ -60,15 +64,22 @@ app.post("/register", (req, res) =>{
 
 ///////////////////////////////////////////////////////////////////////////////
 // Post method - Profile
-app.post("/profile", async (req, res) =>{
+app.post("/profile", async (req, res) => {
   console.log("POST: profile operation");
-  const userInfo = await dbLogicObj.getProfileInfoHandler(req.body)
+  let userInfo = { public: { username: "" } };
+  const userDB = await dbLogicObj.getProfileInfoHandler(req.body)
+
+  if (userDB) {
+    userInfo = userDB;
+  }
+
+  console.log(`[server] Profile: ${userInfo}`);
 
   res.send(userInfo);
 })
 
 ///////////////////////////////////////////////////////////////////////////////
 // Remain listening from the port
-app.listen(port, ()=>{
+app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
