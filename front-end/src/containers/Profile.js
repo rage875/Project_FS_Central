@@ -33,12 +33,12 @@ class Profile extends Component {
       },
     }
 
-    console.log("[Profile]", this.props.params);
+    console.log("[Profile]", this.props);
   };
 
   ///////////////////////////////////////////////////////////////////////////////
   getUserInfo(user) {
-    console.log(`request info from user: ${user.username}`);
+    console.log(`[Profile] request info from user: ${JSON.stringify(user)}`);
     return fetch(`${this.props.server_url}/profile`, {
       method: "POST",
       headers: {
@@ -52,14 +52,24 @@ class Profile extends Component {
 
   ///////////////////////////////////////////////////////////////////////////////
   loadUserInfo() {
+
     const user = {
-      username: this.props.params.username,
+      username: "",
+      accessType: "",
     }
 
+    if (this.props.state) {
+      user.username = this.props.state.username;
+      user.accessType = this.props.state.accessType;
+    }
+
+    console.log(`[Profile] load user:${user}`)
+
     return this.getUserInfo(user)
-      .then(userInfo => {
+      .then(profileInfoDB => {
         this.setState({
-          username: userInfo.email
+          private: profileInfoDB.private,
+          public: profileInfoDB.public,
         })
       });
   }
@@ -73,50 +83,62 @@ class Profile extends Component {
   createProfileInfoVirtDOM(profileInfoDB) {
     let profileInfo = [];
 
-    if (profileInfoDB.username) {
+    console.log(`[Profile] Virtual DOM:${JSON.stringify(profileInfoDB)}`);
+
+    if ("" !== profileInfoDB.public.username) {
       for (let ikey in profileInfoDB) {
         if (profileInfoDB.hasOwnProperty(ikey)) {
           console.log(ikey + " -> " + profileInfoDB[ikey]);
           for (let jkey in profileInfoDB[ikey]) {
             if (profileInfoDB[ikey].hasOwnProperty(jkey)) {
-              console.log(`${ikey}: ${jkey} -> ${profileInfoDB[ikey][jkey]}`);
+
+              if ("defultPrinterInfo" === jkey) {
+                for (let kkey in profileInfoDB[ikey][jkey]) {
+                  if (profileInfoDB[ikey][jkey].hasOwnProperty(kkey)) {
+                    let strTemp = `[${ikey}] ${jkey} ${kkey}: ${profileInfoDB[ikey][jkey][kkey]}`;
+                    console.log(strTemp);
+                    profileInfo.push(strTemp);
+                  }
+                }
+              } else if ("printers" === jkey) {
+                profileInfoDB[ikey][jkey].forEach(printer => {
+                  let strTemp = `[${ikey}] ${jkey} Id:${printer.index}, Model:${printer.model}, Status:${printer.status}`;
+                  console.log(strTemp);
+                });
+              }
+              else {
+                let strTemp = `[${ikey}] ${jkey}: ${profileInfoDB[ikey][jkey]}`;
+                profileInfo.push(strTemp);
+                console.log(strTemp);
+              }
             }
           }
-          /*if ("printers" === key) {
-            // Handle arrays
-            profileInfoDB[key].forEach(printer => {
-              console.log("- Index:" + printer.index + "status:" + printer.status);
-            })
-          } else if ("defultPrinterInfo" === key) {
-            console.log("-- Username:" + profileInfoDB[key].username);
-          } else {
-            profileInfo.push(profileInfoDB[key]);
-          }*/
         }
       }
     }
 
-    console.log("Profileinfo:", profileInfo);
+    console.log("[Profile] Profileinfo:", profileInfo);
 
-    profileInfo.map((elem, index) => (
+    profileInfo = profileInfo.map((elem, index) => (
       <li key={index}> {elem}</li>
     ));
+
+    console.log("[Profile] Mapped Profileinfo:", profileInfo);
 
     return profileInfo;
   }
 
   ///////////////////////////////////////////////////////////////////////////////
   render() {
-    const profileInfo = this.createProfileInfoVirtDOM(
-      this.state);
+    const profileInfo = this.createProfileInfoVirtDOM(this.state);
     // Despues realizar con boton el delete
 
     return (
       <div>
         <h2> Profile's info</h2>
-        {
-          profileInfo
-        }
+        <ul>
+          {profileInfo}
+        </ul>
       </div>
     )
   };

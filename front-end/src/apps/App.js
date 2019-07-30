@@ -36,8 +36,9 @@ class App extends Component {
             render = {()=> <Login server_url={SERVER_URL}/>}
           />
           <Route
-            path={"/profile/:username"}
-            render = {({ match })=> <Profile server_url={SERVER_URL} params={match.params}/>}
+            //path={"/profile/:username?/:typeAccess"}
+            path={"/profile/:username?"}
+            render = {({ match, location})=> <Profile server_url={SERVER_URL} params={match.params} state={location.state}/>}
           />
           <Route
             exact path={"/register"}

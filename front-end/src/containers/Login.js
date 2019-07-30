@@ -54,7 +54,8 @@ class Login extends Component {
     console.log("[Login] Update profile module with:", data.username);
     if ("" !== data.username) {
       this.setState({
-        redirect: true
+        username: data.username,
+        redirect: true,
       })
     } else {
       console.log("[Login] User not found");
@@ -66,8 +67,12 @@ class Login extends Component {
     if (this.state.redirect) {
       return (
         <Redirect push to={{
-          pathname: `/profile/${this.state.username}`,
-          state: { username: this.state.username }
+          //pathname: `/profile/${this.state.username}/private`
+          pathname: `/profile`,
+          state: {
+              username: this.state.username,
+              accessType: "private",
+          }
         }} />
       )
     }
@@ -84,7 +89,7 @@ class Login extends Component {
           <label>
             username:
           <input
-              type="email"
+              type="text"
               name="username"
               value={this.state.value}
               onChange={this.handleChange} />

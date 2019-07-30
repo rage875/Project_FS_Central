@@ -12,7 +12,7 @@ export default (props) => {
   return (
     <div>
       <Header type="profile" />
-      <MainContainer server_url={props.server_url} params={props.params} />
+      <MainContainer {... props}/>
     </div>
   )
 };
