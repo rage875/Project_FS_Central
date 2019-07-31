@@ -58,9 +58,9 @@ class Profile extends Component {
       accessType: "",
     }
 
-    if (this.props.state) {
-      user.username = this.props.state.username;
-      user.accessType = this.props.state.accessType;
+    if (this.props.location.state) {
+      user.username = this.props.location.state.username;
+      user.accessType = this.props.location.state.accessType;
     }
 
     console.log(`[Profile] load user:${user}`)

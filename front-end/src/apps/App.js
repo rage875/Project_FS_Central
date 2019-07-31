@@ -38,7 +38,8 @@ class App extends Component {
           <Route
             //path={"/profile/:username?/:typeAccess"}
             path={"/profile/:username?"}
-            render = {({ match, location})=> <Profile server_url={SERVER_URL} params={match.params} state={location.state}/>}
+            //...props
+            render = {(props)=> <Profile server_url={SERVER_URL} {...props}/>}
           />
           <Route
             exact path={"/register"}

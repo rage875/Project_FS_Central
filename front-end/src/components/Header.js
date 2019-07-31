@@ -1,5 +1,7 @@
-import React from "react";
+import React, { Component } from "react";
 import { Link } from "react-router-dom";
+
+import Auth from "../components/Auth";
 
 ///////////////////////////////////////////////////////////////////////////////
 function createHeaderVirtDOM(type) {
@@ -32,13 +34,26 @@ function createHeaderVirtDOM(type) {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-function Header(props) {
-  const Header = createHeaderVirtDOM(props.type);
-  return (
-    <div>
-      {Header}
-    </div>
-  );
+class Header extends Component {
+  
+  verifyIfItsAuth(){
+    if(Auth.isAuthenticated()){
+      return <li><Link to={"/login"}> Login</Link></li>
+    } else {
+      return <li><Link to={"/logout"}> Logout</Link></li>
+    }
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////
+  render() {
+    const header = createHeaderVirtDOM(this.props.type);
+
+    return (
+      <div>
+      {header}
+      </div>
+    )
+  };
 }
 
 export default Header;
