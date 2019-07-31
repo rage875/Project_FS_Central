@@ -48,19 +48,20 @@ module.exports = class dbLogic {
   async registerHandler(user) {
     console.log(`register user:${JSON.stringify(user)}`);
 
+    let username = "";
     let boAlreadyInDB = true;
 
-    await this.UserModel.findOne({ email: user.username }, (e, userDB) => {
+    await this.UserModel.findOne({ "private.email": user.email }, (e, userDB) => {
       if (e) console.log;
       if (!userDB) {
         boAlreadyInDB = false;
       }
     })
-      .then(() => {
+      .then(async () => {
         if (false === boAlreadyInDB) {
           const userNew = new this.UserModel({
             private: {
-              email: user.username,
+              email: user.email,
               password: user.password,
               fullname: "",
               birth: "",
@@ -71,14 +72,17 @@ module.exports = class dbLogic {
               }
             },
             public: {
-              username: user.username.split("@", 1).toString(),
+              username: user.email.split("@", 1).toString(),
               address: "",
               printers: []
             }
           })
 
-          userNew.save()
-            .then(() => { console.log("User registered") })
+          await userNew.save()
+            .then(() => { 
+              console.log(`User registered: ${userNew.public.username}`);
+              username = userNew.public.username;
+           })
             .catch(e => console.error("Error:", e));
         }
         else {
@@ -86,6 +90,8 @@ module.exports = class dbLogic {
         }
       })
       .catch(e => console.error("Error:", e))
+
+    return username;
   }
 
   ///////////////////////////////////////////////////////////////////////////////

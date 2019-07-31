@@ -55,11 +55,15 @@ app.post("/login", async (req, res) => {
 
 ///////////////////////////////////////////////////////////////////////////////
 // Post method - Register
-app.post("/register", (req, res) => {
+app.post("/register", async (req, res) => {
   console.log("POST: register operation");
-  dbLogicObj.registerHandler(req.body);
 
-  res.status(200).end;
+  let userInfo = { username: "" };
+  userInfo.username = await dbLogicObj.registerHandler(req.body);
+
+  console.log(`[server] register: ${JSON.stringify(userInfo)}`)
+
+  res.send(JSON.stringify(userInfo));
 })
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -73,7 +77,7 @@ app.post("/profile", async (req, res) => {
     userInfo = userDB;
   }
 
-  console.log(`[server] Profile: ${userInfo}`);
+  console.log(`[server] Profile: ${JSON.stringify(userInfo)}`);
 
   res.send(userInfo);
 })
