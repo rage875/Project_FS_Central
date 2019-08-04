@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 
+import "../styles/Login.css";
+
 ///////////////////////////////////////////////////////////////////////////////
 class Login extends Component {
   constructor(props) {
@@ -78,31 +80,38 @@ class Login extends Component {
   ///////////////////////////////////////////////////////////////////////////////
   render() {
     return (
-      <div>
+      <div className="Login">
         {
           this.renderRedirect()
         }
         <form onSubmit={this.handleSubmit}>
-          <label>
-            username:
+          <div class="form-group">
+            <label> Username</label>
+            <input
+                type="text"
+                className="form-control"
+                placeholder=""
+                name="username"
+                value={this.state.value}
+                onChange={this.handleChange} />
+          </div>
+
+          <div class="form-group">
+            <label> Password</label>
           <input
-              type="text"
-              name="username"
-              value={this.state.value}
-              onChange={this.handleChange} />
-          </label>
-          <label>
-            password:
-          <input
-              type="text"
+              type="password"
+              className="form-control"
+              placeholder=""
               name="password"
               value={this.state.value}
               onChange={this.handleChange} />
-          </label>
-          <input
+          </div>
+
+          <button
             type="submit"
-            value="login"
-            disabled={!this.validateForm()} />
+            className="btn btn-primary col text-center"
+            disabled={!this.validateForm()}> Login
+          </button>
         </form>
       </div>
     );

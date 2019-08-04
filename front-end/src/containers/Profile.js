@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import "../styles/Profile.css"
+
 ///////////////////////////////////////////////////////////////////////////////
 class Profile extends Component {
   constructor(props) {
@@ -92,19 +94,31 @@ class Profile extends Component {
               if ("defultPrinterInfo" === jkey) {
                 for (let kkey in profileInfo[ikey][jkey]) {
                   if (profileInfo[ikey][jkey].hasOwnProperty(kkey)) {
-                    let strTemp = `[${ikey}] ${jkey} ${kkey}: ${profileInfo[ikey][jkey][kkey]}`;
-                    profileInfoVirtDom.push(strTemp);
+                    //let strTemp = `[${ikey}] ${jkey} ${kkey}: ${profileInfo[ikey][jkey][kkey]}`;
+                    let profileFields = {
+                      label:`${jkey} - ${kkey}`,
+                      placeholder:`${profileInfo[ikey][jkey][kkey]}`,
+                    }
+                    profileInfoVirtDom.push(profileFields);
                   }
                 }
               } else if ("printers" === jkey) {
                 profileInfo[ikey][jkey].forEach(printer => {
-                  let strTemp = `[${ikey}] ${jkey} Id:${printer.index}, Model:${printer.model}, Status:${printer.status}`;
-                  profileInfoVirtDom.push(strTemp);
+                  //let strTemp = `[${ikey}] ${jkey} Id:${printer.index}, Model:${printer.model}, Status:${printer.status}`;
+                  let profileFields = {
+                    label:`${jkey}`,
+                    placeholder:`Id:${printer.index}, Model:${printer.model}, Status:${printer.status}`,
+                  }
+                  profileInfoVirtDom.push(profileFields);
                 });
               }
               else {
-                let strTemp = `[${ikey}] ${jkey}: ${profileInfo[ikey][jkey]}`;
-                profileInfoVirtDom.push(strTemp);
+                //let strTemp = `[${ikey}] ${jkey}: ${profileInfo[ikey][jkey]}`;
+                let profileFields = {
+                  label:`${jkey}`,
+                  placeholder:`${profileInfo[ikey][jkey]}`,
+                }
+                profileInfoVirtDom.push(profileFields);
               }
             }
           }
@@ -113,10 +127,25 @@ class Profile extends Component {
     }
 
     profileInfoVirtDom = profileInfoVirtDom.map((elem, index) => (
-      <li key={index}> {elem}</li>
+      <div class="form-group row col">
+        <label className="col-sm-2 col-form-label col-form-label-sm">{`${elem.label}`}</label>
+        <div class="col-sm-10">
+          <input 
+            type="text"
+            className="form-control"
+            placeholder={`${elem.placeholder}`}
+            disabled={("private" === this.props.location.state.accessType) ? false : true}
+          />
+        </div>
+      </div>
     ));
 
-    return profileInfoVirtDom;
+    return (
+      <form>
+        <h2> Profile's info</h2>
+        {profileInfoVirtDom}
+      </form>
+    );
   }
 
   ///////////////////////////////////////////////////////////////////////////////
@@ -125,11 +154,8 @@ class Profile extends Component {
     // Despues realizar con boton el delete
 
     return (
-      <div>
-        <h2> Profile's info</h2>
-        <ul>
+      <div className="Profile">
           {profileInfo}
-        </ul>
       </div>
     )
   };

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 
+import "../styles/Register.css";
+
 ///////////////////////////////////////////////////////////////////////////////
 class Register extends Component {
   constructor(props) {
@@ -76,39 +78,49 @@ class Register extends Component {
   ///////////////////////////////////////////////////////////////////////////////
   render() {
     return (
-      <div>
+      <div className="Register">
         {
           this.renderRedirect()
         }
         <form onSubmit={this.handleSubmit}>
-          <label>
-            email:
-          <input
-              type="email"
+          <div class="form-group">
+            <label> Email</label>
+            <input
+              type="text"
+              className="form-control"
+              placeholder=""
               name="email"
               value={this.state.value}
               onChange={this.handleChange} />
-          </label>
-          <label>
-            password:
+          </div>
+
+          <div class="form-group">
+            <label> Password</label>
           <input
-              type="text"
+              type="password"
+              className="form-control"
+              placeholder=""
               name="password"
               value={this.state.value}
               onChange={this.handleChange} />
-          </label>
-          <label>
-            confirmPassword:
+          </div>
+
+          <div class="form-group">
+            <label> Confirm password</label>
           <input
-              type="text"
+              type="password"
+              className="form-control"
+              placeholder=""
               name="confirmPassword"
               value={this.state.value}
               onChange={this.handleChange} />
-          </label>
-          <input
+          </div>
+
+          <button
             type="submit"
-            value="submit"
-            disabled={!this.validateForm()} />
+            className="btn btn-primary col text-center"
+            disabled={!this.validateForm()}> Register
+          </button>
         </form>
       </div>
     );

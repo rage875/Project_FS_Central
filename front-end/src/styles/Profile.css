@@ -1,0 +1,6 @@
+@media all and (min-width: 1200px) {
+    .Profile form {
+      margin: 0 auto;
+      max-width: 694px;
+    }
+}
