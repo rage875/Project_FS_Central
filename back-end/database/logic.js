@@ -1,4 +1,5 @@
 const setupUserModel = require("../models/users");
+const bcrypt = require('bcrypt');
 
 ///////////////////////////////////////////////////////////////////////////////
 module.exports = class dbLogic {
@@ -9,18 +10,19 @@ module.exports = class dbLogic {
       db: "users"
     }
 
-    this.setupModels();
+    this.setupModels(false);
   }
 
   ///////////////////////////////////////////////////////////////////////////////
-  async setupModels() {
+  async setupModels(reset) {
     // Setup user model and perform connection with database
     this.UserModel = await setupUserModel(this.config);
 
-    // Just for reset DB
-    /*this.UserModel.remove({}, function(e){
-      console.log("All collection removed");
-    })*/
+    if (reset) {
+      this.UserModel.remove({}, function (e) {
+        console.log("All collection removed");
+      })
+    }
 
     this.getUsersList();
   }
@@ -79,10 +81,10 @@ module.exports = class dbLogic {
           })
 
           await userNew.save()
-            .then(() => { 
+            .then(() => {
               console.log(`User registered: ${userNew.public.username}`);
               username = userNew.public.username;
-           })
+            })
             .catch(e => console.error("Error:", e));
         }
         else {
@@ -99,16 +101,16 @@ module.exports = class dbLogic {
     console.log(`login user:${JSON.stringify(user)}`);
 
     return await this.UserModel.findOne({
-      "public.username": user.username, "private.password": user.password
+      "public.username": user.username
     }, (e, userDB) => {
       if (e) console.log;
-      if (null != userDB) {
+      if (null != userDB && bcrypt.compareSync(
+        user.password, userDB.private.password)) {
         console.log("user found and password match");
       } else {
         console.log("user not found");
       }
     })
-      // ? How to modify the res within then properly
       .catch(e => { console.log(e) });
   }
 
@@ -140,7 +142,7 @@ module.exports = class dbLogic {
     console.log(`[logic] Profile: ${user}`);
 
     if ("public" === user.accessType) {
-      userProfile = userProfileDB.public;
+      userProfile = { public: userProfileDB.public };
     } else if ("private" === user.accessType) {
       userProfile = userProfileDB;
     }

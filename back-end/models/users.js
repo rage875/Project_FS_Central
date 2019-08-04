@@ -1,4 +1,7 @@
 const setupDB = require('../database/db');
+const bcrypt = require('bcrypt');
+
+const saltRounds = 10;
 
 ///////////////////////////////////////////////////////////////////////////////
 module.exports = async function setupUserModel(config) {
@@ -7,7 +10,7 @@ module.exports = async function setupUserModel(config) {
 
   let User = new Schema({
     private: {
-      email: { type: String, lowercase: true },
+      email: { type: String, lowercase: true, required: true },
       password: String,
       fullname: String,
       birth: Date,
@@ -18,7 +21,7 @@ module.exports = async function setupUserModel(config) {
       }
     },
     public: {
-      username: String,
+      username: { type:String, required: true },
       address: String,
       printers: [{
         index: Number,
@@ -35,12 +38,7 @@ module.exports = async function setupUserModel(config) {
   });
 
   User.pre('save', function (next) {
-    console.log("Pre save middleware");
-
-    if (!this.private.email) {
-      let err = new Error("Error email not exist");
-      next(err);
-    }
+    this.private.password = bcrypt.hashSync(this.private.password, saltRounds);
     next();
   })
 
