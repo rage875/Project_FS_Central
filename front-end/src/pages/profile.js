@@ -8,7 +8,6 @@ import MainContainer from "../containers/Profile";
 
 ///////////////////////////////////////////////////////////////////////////////
 export default (props) => {
-  console.log("[Profilepage]", props)
   return (
     <div>
       <Header type="profile" />

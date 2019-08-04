@@ -7,9 +7,11 @@ import Header from "../components/Header";
 import MainContainer from "../containers/Login";
 
 ///////////////////////////////////////////////////////////////////////////////
-export default (props) => (
-    <div>
+export default (props) => {
+    return (
+      <div>
         <Header type="login" />
-        <MainContainer server_url={props.server_url} />
-    </div>
-);
+        <MainContainer {... props}/>
+      </div>
+    )
+  };

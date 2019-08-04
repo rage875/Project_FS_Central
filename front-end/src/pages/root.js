@@ -7,9 +7,11 @@ import Header from "../components/Header";
 import Printers from "../containers/Printers";
 
 ///////////////////////////////////////////////////////////////////////////////
-export default (props) => (
-    <div>
+export default (props) => {
+    return (
+      <div>
         <Header type="root" />
-        <Printers server_url={props.server_url} />
-    </div>
-);
+        <Printers {... props}/>
+      </div>
+    )
+  };

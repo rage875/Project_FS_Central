@@ -7,9 +7,11 @@ import Header from "../components/Header";
 import MainContainer from "../containers/Register";
 
 ///////////////////////////////////////////////////////////////////////////////
-export default (props) => (
-    <div>
+export default (props) => {
+    return (
+      <div>
         <Header type="register" />
-        <MainContainer server_url={props.server_url} />
-    </div>
-);
+        <MainContainer {... props}/>
+      </div>
+    )
+  };

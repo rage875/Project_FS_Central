@@ -35,8 +35,6 @@ class Login extends Component {
     event.preventDefault();
     const user = this.state;
 
-    console.log(`User login: ${user.username}:${user.password}, submit event`);
-
     fetch(`${this.props.server_url}/login`, {
       method: "POST",
       headers: {
@@ -67,7 +65,6 @@ class Login extends Component {
     if (this.state.redirect) {
       return (
         <Redirect push to={{
-          //pathname: `/profile/${this.state.username}/private`
           pathname: `/profile`,
           state: {
               username: this.state.username,

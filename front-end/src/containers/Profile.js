@@ -38,7 +38,6 @@ class Profile extends Component {
 
   ///////////////////////////////////////////////////////////////////////////////
   getUserInfo(user) {
-    console.log(`[Profile] request info from user: ${JSON.stringify(user)}`);
     return fetch(`${this.props.server_url}/profile`, {
       method: "POST",
       headers: {
@@ -52,7 +51,6 @@ class Profile extends Component {
 
   ///////////////////////////////////////////////////////////////////////////////
   loadUserInfo() {
-
     const user = {
       username: "",
       accessType: "",
@@ -80,36 +78,33 @@ class Profile extends Component {
   }
 
   ///////////////////////////////////////////////////////////////////////////////
-  createProfileInfoVirtDOM(profileInfoDB) {
-    let profileInfo = [];
+  createProfileInfoVirtDOM(profileIn) {
+    const profileInfo = profileIn;
+    let profileInfoVirtDom = [];
 
-    console.log(`[Profile] Virtual DOM:${JSON.stringify(profileInfoDB)}`);
-
-    if ("" !== profileInfoDB.public.username) {
-      for (let ikey in profileInfoDB) {
-        if (profileInfoDB.hasOwnProperty(ikey)) {
-          console.log(ikey + " -> " + profileInfoDB[ikey]);
-          for (let jkey in profileInfoDB[ikey]) {
-            if (profileInfoDB[ikey].hasOwnProperty(jkey)) {
+    if ("" !== profileInfo.public.username) {
+      for (let ikey in profileInfo) {
+        if (profileInfo.hasOwnProperty(ikey)) {
+          console.log(ikey + " -> " + profileInfo[ikey]);
+          for (let jkey in profileInfo[ikey]) {
+            if (profileInfo[ikey].hasOwnProperty(jkey)) {
 
               if ("defultPrinterInfo" === jkey) {
-                for (let kkey in profileInfoDB[ikey][jkey]) {
-                  if (profileInfoDB[ikey][jkey].hasOwnProperty(kkey)) {
-                    let strTemp = `[${ikey}] ${jkey} ${kkey}: ${profileInfoDB[ikey][jkey][kkey]}`;
-                    console.log(strTemp);
-                    profileInfo.push(strTemp);
+                for (let kkey in profileInfo[ikey][jkey]) {
+                  if (profileInfo[ikey][jkey].hasOwnProperty(kkey)) {
+                    let strTemp = `[${ikey}] ${jkey} ${kkey}: ${profileInfo[ikey][jkey][kkey]}`;
+                    profileInfoVirtDom.push(strTemp);
                   }
                 }
               } else if ("printers" === jkey) {
-                profileInfoDB[ikey][jkey].forEach(printer => {
+                profileInfo[ikey][jkey].forEach(printer => {
                   let strTemp = `[${ikey}] ${jkey} Id:${printer.index}, Model:${printer.model}, Status:${printer.status}`;
-                  console.log(strTemp);
+                  profileInfoVirtDom.push(strTemp);
                 });
               }
               else {
-                let strTemp = `[${ikey}] ${jkey}: ${profileInfoDB[ikey][jkey]}`;
-                profileInfo.push(strTemp);
-                console.log(strTemp);
+                let strTemp = `[${ikey}] ${jkey}: ${profileInfo[ikey][jkey]}`;
+                profileInfoVirtDom.push(strTemp);
               }
             }
           }
@@ -117,15 +112,11 @@ class Profile extends Component {
       }
     }
 
-    console.log("[Profile] Profileinfo:", profileInfo);
-
-    profileInfo = profileInfo.map((elem, index) => (
+    profileInfoVirtDom = profileInfoVirtDom.map((elem, index) => (
       <li key={index}> {elem}</li>
     ));
 
-    console.log("[Profile] Mapped Profileinfo:", profileInfo);
-
-    return profileInfo;
+    return profileInfoVirtDom;
   }
 
   ///////////////////////////////////////////////////////////////////////////////
