@@ -36,7 +36,6 @@ class App extends Component {
             render = {()=> <Login server_url={SERVER_URL}/>}
           />
           <Route
-            //path={"/profile/:username?/:typeAccess"}
             path={"/profile/:username?"}
             //...props
             render = {(props)=> <Profile server_url={SERVER_URL} {...props}/>}
