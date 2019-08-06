@@ -41,14 +41,15 @@ app.get("/", async (req, res) => {
 app.post("/login", async (req, res) => {
   console.log("POST: login operation");
 
-  let userInfo = { username: "" };
-  const userDB = await dbLogicObj.loginHandler(req.body);
+  let userInfo = { username: "", token:""};
+  const token = await dbLogicObj.loginHandler(req.body);
 
-  if (userDB) {
-    userInfo.username = userDB.public.username;
+  if (token) {
+    userInfo.username = req.body.username;
+    userInfo.token = token;
   }
 
-  console.log(JSON.stringify(userInfo))
+  console.log("[server] login:",JSON.stringify(userInfo))
 
   res.send(JSON.stringify(userInfo));
 })

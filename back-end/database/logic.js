@@ -1,5 +1,6 @@
 const setupUserModel = require("../models/users");
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 ///////////////////////////////////////////////////////////////////////////////
 module.exports = class dbLogic {
@@ -99,19 +100,30 @@ module.exports = class dbLogic {
   ///////////////////////////////////////////////////////////////////////////////
   async loginHandler(user) {
     console.log(`login user:${JSON.stringify(user)}`);
+    let genToken = "";
 
-    return await this.UserModel.findOne({
+    await this.UserModel.findOne({
       "public.username": user.username
-    }, (e, userDB) => {
+    }, async (e, userDB) => {
       if (e) console.log;
       if (null != userDB && bcrypt.compareSync(
         user.password, userDB.private.password)) {
+        await jwt.sign({ user }, 'palabra', function (err, token) {
+          if (!e) {
+            genToken = token;
+          } else {
+            console.log(e);
+          }
+        })
         console.log("user found and password match");
+        console.log(`token:${genToken}`);
       } else {
         console.log("user not found");
       }
     })
       .catch(e => { console.log(e) });
+
+    return genToken;
   }
 
   ///////////////////////////////////////////////////////////////////////////////
