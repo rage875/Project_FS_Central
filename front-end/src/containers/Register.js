@@ -83,7 +83,7 @@ class Register extends Component {
           this.renderRedirect()
         }
         <form onSubmit={this.handleSubmit}>
-          <div class="form-group">
+          <div className="form-group">
             <label> Email</label>
             <input
               type="text"
@@ -94,7 +94,7 @@ class Register extends Component {
               onChange={this.handleChange} />
           </div>
 
-          <div class="form-group">
+          <div className="form-group">
             <label> Password</label>
           <input
               type="password"
@@ -105,7 +105,7 @@ class Register extends Component {
               onChange={this.handleChange} />
           </div>
 
-          <div class="form-group">
+          <div className="form-group">
             <label> Confirm password</label>
           <input
               type="password"

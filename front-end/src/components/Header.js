@@ -52,10 +52,10 @@ class Header extends Component {
                   aria-expanded="false">
                   {hNavDropdownIconImg}
                 </button>
-                <ul className="dropdown-menu" aria-labelledby="dropdownMenu">
+                <div className="dropdown-menu dropdown-menu-right">
                   <li className="dropdown-item"><Link to={"/login"}> Login</Link></li>
                   <li className="dropdown-item"><Link to={"/register"}> Register</Link></li>
-                </ul>
+                </div>
               </div>
             </div>
         </nav>

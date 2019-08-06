@@ -1,6 +1,12 @@
-@media all and (min-width: 1200px) {
-    .Header .NavbarElemContainer {
+@media all and (min-width: 1400px) {
+    .Header {
       margin: 0 auto;
-      max-width: 694px;
+      padding-left: 10%;
+      padding-right: 10%;
+      background-color: #343a40
     }
+}
+
+.dropdown, .dropup {
+  margin-left: auto;
 }

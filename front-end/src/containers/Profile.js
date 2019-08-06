@@ -158,8 +158,7 @@ class Profile extends Component {
           type: "text",
           placeholder: `${profileInfo[item]}`,
           name: `public:${item}`,
-          value: this.state.private[item],
-          onChange: this.handleChange,
+          value: this.state.public[item],
           disabled: false,
         }
 
@@ -167,42 +166,43 @@ class Profile extends Component {
       }
     }
 
-    profileInfo.printers.forEach(([printer]) => {
-      let count = 0;
+    if (profileInfo.printers.length) {
       let formParsedElem = {
         type: "text",
         placeholder: "",
         name: "",
         value: "",
-        onChange: this.handleChange,
       }
 
-      // index
-      formParsedElem.placeholder = `${printer.index}`;
-      formParsedElem.name = `public:printer:index`;
-      formParsedElem.value = this.state.public.printers[count].index;
-      parsedInfo.push(formParsedElem)
+      profileInfo.printers.forEach((printer) => {
+        let count = 0;
+        // index
+        formParsedElem.placeholder = `${printer.index}`;
+        formParsedElem.name = `public:printer:index`;
+        formParsedElem.value = this.state.public.printers[count].index;
+        parsedInfo.push(formParsedElem)
 
-      // model
-      formParsedElem.placeholder = `${printer.model}`;
-      formParsedElem.name = `public:printer:model`;
-      formParsedElem.value = this.state.public.printers[count].model;
-      parsedInfo.push(formParsedElem)
+        // model
+        formParsedElem.placeholder = `${printer.model}`;
+        formParsedElem.name = `public:printer:model`;
+        formParsedElem.value = this.state.public.printers[count].model;
+        parsedInfo.push(formParsedElem)
 
-      // specs
-      formParsedElem.placeholder = `${printer.specs}`;
-      formParsedElem.name = `public:printer:specs`;
-      formParsedElem.value = this.state.public.printers[count].specs;
-      parsedInfo.push(formParsedElem)
+        // specs
+        formParsedElem.placeholder = `${printer.specs}`;
+        formParsedElem.name = `public:printer:specs`;
+        formParsedElem.value = this.state.public.printers[count].specs;
+        parsedInfo.push(formParsedElem)
 
-      // status
-      formParsedElem.placeholder = `${printer.status}`;
-      formParsedElem.name = `public:printer:status`;
-      formParsedElem.value = this.state.public.printers[count].status;
-      parsedInfo.push(formParsedElem)
+        // status
+        formParsedElem.placeholder = `${printer.status}`;
+        formParsedElem.name = `public:printer:status`;
+        formParsedElem.value = this.state.public.printers[count].status;
+        parsedInfo.push(formParsedElem)
 
-      count++;
-    })
+        count++;
+      })
+    }
 
     return parsedInfo;
   }
@@ -210,18 +210,17 @@ class Profile extends Component {
   createProfileFormInfo(profileIn) {
     const profileInfo = profileIn;
     let profileForm = profileInfo.map((elem, index) => (
-      <div class="form-group row col">
-        <label className="col-sm-2 col-form-label col-form-label-sm">{`${elem.label}`}</label>
-        <div class="col-sm-10">
+      <div className="form-group row col" key={index}>
+        <label className="col-sm-2 col-form-label col-form-label-sm">{`${elem.name}`}</label>
+        <div className="col-sm-10">
           <input
             className="form-control"
             type={`${elem.type}`}
             placeholder={`${elem.placeholder}`}
             name={`${elem.name}`}
             value={`${elem.value}`}
-            onChange={`${elem.onChange}`}
+            onChange={this.handleChange}
             disabled={("public" === this.props.location.state.accessType) ? true : elem.disabled}
-            key={index}
           />
         </div>
       </div>
@@ -244,18 +243,27 @@ class Profile extends Component {
       profileInfoVirtDom = this.createProfileFormInfo(parsedProfileInfo);
     }
 
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <h2> Profile's info</h2>
-        {profileInfoVirtDom}
+    if(this.validateForm()){
+      return (
+        <form onSubmit={this.handleSubmit}>
+          <h2> Profile's info</h2>
+          {profileInfoVirtDom}
 
-        <button
-          type="submit"
-          className="btn btn-primary col text-center"
-          disabled={!this.validateForm()}> Update
-          </button>
-      </form>
-    );
+          <button
+            type="submit"
+            className="btn btn-primary col text-center"
+            disabled={!this.validateForm()}> Update
+        </button>
+        </form>
+      );
+    } else {
+      return (
+        <form onSubmit={this.handleSubmit}>
+          <h2> Profile's info</h2>
+          {profileInfoVirtDom}
+        </form>
+      );
+    }
   }
 
   ///////////////////////////////////////////////////////////////////////////////

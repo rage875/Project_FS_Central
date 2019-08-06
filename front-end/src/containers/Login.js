@@ -52,6 +52,7 @@ class Login extends Component {
   ///////////////////////////////////////////////////////////////////////////////
   handleResponse(data) {
     console.log("[Login] Update profile module with:", data.username);
+    console.log("[Login] Token:", data.token);
     if ("" !== data.username) {
       this.setState({
         username: data.username,
@@ -85,7 +86,7 @@ class Login extends Component {
           this.renderRedirect()
         }
         <form onSubmit={this.handleSubmit}>
-          <div class="form-group">
+          <div className="form-group">
             <label> Username</label>
             <input
                 type="text"
@@ -96,7 +97,7 @@ class Login extends Component {
                 onChange={this.handleChange} />
           </div>
 
-          <div class="form-group">
+          <div className="form-group">
             <label> Password</label>
           <input
               type="password"
