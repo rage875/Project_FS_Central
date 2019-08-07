@@ -58,23 +58,24 @@ class Profile extends Component {
         private: {
           [`${splittedName[1]}`]: value,
         }
-      })
+      });
     } else if ("public" === splittedName[0]) {
       if ("printers" !== splittedName[1]) {
         this.setState({
           public: {
             [`${splittedName[1]}`]: value,
           }
-        })
+        });
       } else {
         // ? how to manage the update for each element of the array
-        this.setState({
+        this.setState(prevState => ({
           public: {
-            printers: [{
-              [`${splittedName[2]}`]: value,
-            }],
+            printers: {
+              ...prevState.printers,
+              [prevState.public.printers[`${splittedName[2]}`][`${splittedName[3]}`]] : value,
+            },
           }
-        })
+        }));
       }
     }
   }

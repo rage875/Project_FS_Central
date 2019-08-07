@@ -42,7 +42,7 @@ class Header extends Component {
             </button>
 
             <div className="collapse navbar-collapse" id="navbarText">
-              <div className="dropdown">
+              <div className="dropdown " aria-labelledby="navbarText">
                 <button
                   className="btn btn-sm btn-secondary dropdown-toggle"
                   type="button"
@@ -53,8 +53,8 @@ class Header extends Component {
                   {hNavDropdownIconImg}
                 </button>
                 <div className="dropdown-menu dropdown-menu-right">
-                  <li className="dropdown-item"><Link to={"/login"}> Login</Link></li>
-                  <li className="dropdown-item"><Link to={"/register"}> Register</Link></li>
+                  <button className="dropdown-item" type="button"><Link to={"/login"}> Login</Link></button>
+                  <button className="dropdown-item" type="button"><Link to={"/register"}> Register</Link></button>
                 </div>
               </div>
             </div>
