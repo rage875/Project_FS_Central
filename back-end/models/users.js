@@ -14,7 +14,7 @@ module.exports = async function setupUserModel(config) {
       password: String,
       fullname: String,
       birth: Date,
-      defultPrinterInfo: {
+      defaultPrinterInfo: {
         username: String,
         model: String,
         specs: String,

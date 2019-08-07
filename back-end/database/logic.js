@@ -68,7 +68,7 @@ module.exports = class dbLogic {
               password: user.password,
               fullname: "",
               birth: "",
-              defultPrinterInfo: {
+              defaultPrinterInfo: {
                 username: "",
                 model: "",
                 specs: ""
