@@ -12,7 +12,7 @@ class Profile extends Component {
         password: String,
         fullname: String,
         birth: Date,
-        defultPrinterInfo: {
+        defaultPrinterInfo: {
           username: String,
           model: String,
           specs: String,
@@ -33,6 +33,7 @@ class Profile extends Component {
           },
         }],
       },
+      ready: false,
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -50,33 +51,32 @@ class Profile extends Component {
   handleChange(event) {
     const { name, value } = event.target;
     let splittedName = name.split(":");
+    let tmpState = { ...this.state }
+    let updateState = true;
 
-    console.log(`${name}: ${value}`);
+    //console.log(`${name}: ${value}`);
+    //console.log(splittedName);
 
     if ("private" === splittedName[0]) {
-      this.setState({
-        private: {
-          [`${splittedName[1]}`]: value,
-        }
-      });
+      if ("defaultPrinterInfo" !== splittedName[1]) {
+        tmpState.private[`${splittedName[1]}`] = value;
+      } else {
+        tmpState.private.defaultPrinterInfo[`${splittedName[2]}`] = value;
+      }
     } else if ("public" === splittedName[0]) {
       if ("printers" !== splittedName[1]) {
-        this.setState({
-          public: {
-            [`${splittedName[1]}`]: value,
-          }
-        });
+        tmpState.public[`${splittedName[1]}`] = value;
       } else {
-        // ? how to manage the update for each element of the array
-        this.setState(prevState => ({
-          public: {
-            printers: {
-              ...prevState.printers,
-              [prevState.public.printers[`${splittedName[2]}`][`${splittedName[3]}`]] : value,
-            },
-          }
-        }));
+        tmpState.public.printers[`${splittedName[2]}`][`${splittedName[3]}`] = value;
       }
+    } else {
+      updateState = false;
+    }
+
+    if (updateState) {
+      this.setState({
+        tmpState
+      });
     }
   }
 
@@ -118,31 +118,43 @@ class Profile extends Component {
         this.setState({
           private: profileInfoDB.private,
           public: profileInfoDB.public,
+          ready: true,
         })
       });
   }
 
   ///////////////////////////////////////////////////////////////////////////////
-  componentDidMount() {
-    this.loadUserInfo();
-  }
-
-  ///////////////////////////////////////////////////////////////////////////////
   parseProfilePrivateInfo(profileIn) {
     const profileInfo = profileIn.private;
+    let typeInfo = "private";
     let parsedInfo = [];
 
     for (let item in profileInfo) {
       let formParsedElem = {
         type: ("password" === item || "email" === item) ? (item) : ("text"),
         placeholder: `${profileInfo[item]}`,
-        name: `private:${item}`,
+        name: `${typeInfo}:${item}`,
         value: this.state.private[item],
         onChange: this.handleChange,
         disabled: ("password" === item || "email" === item) ? (true) : (false),
       }
 
-      parsedInfo.push(formParsedElem)
+      if("defaultPrinterInfo" !== item){
+        parsedInfo.push(formParsedElem);
+      }
+    }
+
+    for (let item in profileInfo.defaultPrinterInfo) {
+      let formParsedElem = {
+        type: ("password" === item || "email" === item) ? (item) : ("text"),
+        placeholder: `${profileInfo.defaultPrinterInfo[item]}`,
+        name: `${typeInfo}:defaultPrinterInfo:${item}`,
+        value: this.state.private.defaultPrinterInfo[item],
+        onChange: this.handleChange,
+        disabled: ("password" === item || "email" === item) ? (true) : (false),
+      }
+
+      parsedInfo.push(formParsedElem);
     }
 
     return parsedInfo;
@@ -151,6 +163,7 @@ class Profile extends Component {
   ///////////////////////////////////////////////////////////////////////////////
   parseProfilePublicInfo(profileIn) {
     const profileInfo = profileIn.public;
+    let typeInfo = "public";
     let parsedInfo = [];
 
     for (let item in profileInfo) {
@@ -158,7 +171,7 @@ class Profile extends Component {
         let formParsedElem = {
           type: "text",
           placeholder: `${profileInfo[item]}`,
-          name: `public:${item}`,
+          name: `${typeInfo}:${item}`,
           value: this.state.public[item],
           disabled: false,
         }
@@ -177,29 +190,13 @@ class Profile extends Component {
 
       profileInfo.printers.forEach((printer) => {
         let count = 0;
-        // index
-        formParsedElem.placeholder = `${printer.index}`;
-        formParsedElem.name = `public:printer:index`;
-        formParsedElem.value = this.state.public.printers[count].index;
-        parsedInfo.push(formParsedElem)
+        for(let item in printer){
+          formParsedElem.placeholder = `${printer[item]}`;
+          formParsedElem.name = `${typeInfo}:printer:${item}`;
+          formParsedElem.value = this.state.public.printers[count][`${item}`];
 
-        // model
-        formParsedElem.placeholder = `${printer.model}`;
-        formParsedElem.name = `public:printer:model`;
-        formParsedElem.value = this.state.public.printers[count].model;
-        parsedInfo.push(formParsedElem)
-
-        // specs
-        formParsedElem.placeholder = `${printer.specs}`;
-        formParsedElem.name = `public:printer:specs`;
-        formParsedElem.value = this.state.public.printers[count].specs;
-        parsedInfo.push(formParsedElem)
-
-        // status
-        formParsedElem.placeholder = `${printer.status}`;
-        formParsedElem.name = `public:printer:status`;
-        formParsedElem.value = this.state.public.printers[count].status;
-        parsedInfo.push(formParsedElem)
+          parsedInfo.push(formParsedElem)
+        }
 
         count++;
       })
@@ -221,8 +218,7 @@ class Profile extends Component {
             name={`${elem.name}`}
             value={`${elem.value}`}
             onChange={this.handleChange}
-            disabled={("public" === this.props.location.state.accessType) ? true : elem.disabled}
-          />
+            disabled={("public" === this.props.location.state.accessType) ? true : elem.disabled}/>
         </div>
       </div>
     ));
@@ -252,9 +248,9 @@ class Profile extends Component {
 
           <button
             type="submit"
-            className="btn btn-primary col text-center"
+            className="btn btn-primary col col-sm-6 text-center"
             disabled={!this.validateForm()}> Update
-        </button>
+          </button>
         </form>
       );
     } else {
@@ -268,9 +264,16 @@ class Profile extends Component {
   }
 
   ///////////////////////////////////////////////////////////////////////////////
+  componentDidMount() {
+    this.loadUserInfo();
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////
   render() {
-    const profileInfo = this.createProfileInfoVirtDOM(this.state);
-    // Despues realizar con boton el delete
+    let profileInfo = "";
+    if(true === this.state.ready){
+      profileInfo = this.createProfileInfoVirtDOM(this.state);
+    }
 
     return (
       <div className="Profile">
