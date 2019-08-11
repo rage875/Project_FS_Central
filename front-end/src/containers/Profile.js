@@ -85,7 +85,23 @@ class Profile extends Component {
   ///////////////////////////////////////////////////////////////////////////////
   handleSubmit(event) {
     event.preventDefault();
-    console.log(`PUT operation for updated should be here`);
+
+    this.updateUserInfo(this.state);
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////
+  updateUserInfo(user) {
+    console.log("[Profile] Update user info")
+    return fetch(`${this.props.server_url}/profile`, {
+      method: "PUT",
+      headers: {
+        "Authorization": `Bearer ${this.props.location.state.token}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(user)
+    })
+      .then(res => res.json())
+      .catch(error => console.error("Error:", error));
   }
 
   ///////////////////////////////////////////////////////////////////////////////

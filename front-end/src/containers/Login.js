@@ -11,6 +11,7 @@ class Login extends Component {
       username: "",
       password: "",
       redirect: false,
+      token: "",
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -57,6 +58,7 @@ class Login extends Component {
       this.setState({
         username: data.username,
         redirect: true,
+        token: data.token,
       })
     } else {
       console.log("[Login] User not found");
@@ -72,6 +74,7 @@ class Login extends Component {
           state: {
               username: this.state.username,
               accessType: "private",
+              token: this.state.token,
           }
         }} />
       )
