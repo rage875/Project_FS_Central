@@ -19,7 +19,7 @@ app.use(bodyParser.json())
 // Add header for for 'Access-Control-Allow-Origin
 app.use("*", (req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET", "POST");
+  res.header("Access-Control-Allow-Methods", "GET", "POST", "PUT");
   res.header("Access-Control-Allow-Headers",
     "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
   next();
@@ -78,9 +78,21 @@ app.post("/profile", async (req, res) => {
     userInfo = userDB;
   }
 
-  console.log(`[server] Profile: ${JSON.stringify(userInfo)}`);
+  console.log(`[server] Post profile: ${JSON.stringify(userInfo)}`);
 
   res.send(userInfo);
+})
+
+///////////////////////////////////////////////////////////////////////////////
+// Put method - Profile
+app.put("/profile", async (req, res) => {
+  console.log("PUT: profile operation");
+
+  await dbLogicObj.updateProfileInfoHandler(req.body)
+
+  console.log(`[server] Put profile: ${JSON.stringify(userInfo)}`);
+
+  res.status(200).send('Updated');
 })
 
 ///////////////////////////////////////////////////////////////////////////////

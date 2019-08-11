@@ -161,4 +161,18 @@ module.exports = class dbLogic {
 
     return userProfile;
   }
+
+  ///////////////////////////////////////////////////////////////////////////////
+  async updateProfileInfoHandler(user) {
+    this.UserModel.update(
+      {"private.email": user.email},
+      {"$set": { "public": user.public},
+       //"$set": { "private": user.private},
+      },
+      (e, item) => {
+        console.log(item);
+      }
+    )
+  }
+
 }
