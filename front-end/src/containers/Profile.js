@@ -38,6 +38,8 @@ class Profile extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.addNewPrinter = this.addNewPrinter.bind(this);
+    this.removeLastPrinter = this.removeLastPrinter.bind(this);
 
     console.log("[Profile]", this.props);
   };
@@ -124,6 +126,39 @@ class Profile extends Component {
   }
 
   ///////////////////////////////////////////////////////////////////////////////
+  addNewPrinter(event) {
+    event.preventDefault();
+    let tmpState = { ...this.state }
+
+    let printer = {
+      index: tmpState.public.printers.length + 1,
+      model: "",
+      specs: "",
+      status: "Not Available",
+    }
+
+    tmpState.public.printers.push(printer);
+
+    this.setState({
+      tmpState
+    });
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////
+  removeLastPrinter(event) {
+    event.preventDefault();
+    let tmpState = { ...this.state }
+
+    if (tmpState.public.printers.length) {
+      tmpState.public.printers.pop();
+
+      this.setState({
+        tmpState
+      });
+    }
+  }
+
+  ///////////////////////////////////////////////////////////////////////////////
   parseProfilePrivateInfo(profileIn) {
     const profileInfo = profileIn.private;
     let typeInfo = "private";
@@ -139,7 +174,7 @@ class Profile extends Component {
         disabled: ("password" === item || "email" === item) ? (true) : (false),
       }
 
-      if("defaultPrinterInfo" !== item){
+      if ("defaultPrinterInfo" !== item) {
         parsedInfo.push(formParsedElem);
       }
     }
@@ -181,24 +216,18 @@ class Profile extends Component {
     }
 
     if (profileInfo.printers.length) {
-      let formParsedElem = {
-        type: "text",
-        placeholder: "",
-        name: "",
-        value: "",
-      }
-
       profileInfo.printers.forEach((printer) => {
-        let count = 0;
-        for(let item in printer){
-          formParsedElem.placeholder = `${printer[item]}`;
-          formParsedElem.name = `${typeInfo}:printer:${item}`;
-          formParsedElem.value = this.state.public.printers[count][`${item}`];
+        for (let item in printer) {
+          let formParsedElem = {
+            type: "text",
+            placeholder: `${printer[item]}`,
+            name: `${typeInfo}:printers:${printer.index - 1}:${item}`,
+            value: this.state.public.printers[`${printer.index - 1}`][`${item}`],
+            disabled: ("index" === item) ? (true) : (false),
+          }
 
           parsedInfo.push(formParsedElem)
         }
-
-        count++;
       })
     }
 
@@ -218,7 +247,7 @@ class Profile extends Component {
             name={`${elem.name}`}
             value={`${elem.value}`}
             onChange={this.handleChange}
-            disabled={("public" === this.props.location.state.accessType) ? true : elem.disabled}/>
+            disabled={("public" === this.props.location.state.accessType) ? true : elem.disabled} />
         </div>
       </div>
     ));
@@ -240,18 +269,31 @@ class Profile extends Component {
       profileInfoVirtDom = this.createProfileFormInfo(parsedProfileInfo);
     }
 
-    if(this.validateForm()){
+    if (this.validateForm()) {
       return (
-        <form onSubmit={this.handleSubmit}>
-          <h2> Profile's info</h2>
-          {profileInfoVirtDom}
-
-          <button
-            type="submit"
-            className="btn btn-primary col col-sm-6 text-center"
-            disabled={!this.validateForm()}> Update
-          </button>
-        </form>
+        <div>
+          <form onSubmit={this.handleSubmit}>
+            <h2> Profile's info</h2>
+            {profileInfoVirtDom}
+            <button
+              onClick={this.addNewPrinter}
+              className="btn btn-primary"
+              type="button">
+              + Printer
+            </button>
+            <button
+              onClick={this.removeLastPrinter}
+              className="btn btn-primary"
+              type="button">
+              - Printer
+            </button>
+            <button
+              type="submit"
+              className="btn btn-primary col col-sm-6 text-center"
+              disabled={!this.validateForm()}> Update
+            </button>
+          </form>
+        </div>
       );
     } else {
       return (
@@ -271,7 +313,7 @@ class Profile extends Component {
   ///////////////////////////////////////////////////////////////////////////////
   render() {
     let profileInfo = "";
-    if(true === this.state.ready){
+    if (true === this.state.ready) {
       profileInfo = this.createProfileInfoVirtDOM(this.state);
     }
 
