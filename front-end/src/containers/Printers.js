@@ -40,15 +40,16 @@ class Printers extends Component {
   ///////////////////////////////////////////////////////////////////////////////
   createPrintersListVirtDOM(printersListIn) {
     const printersList = printersListIn;
+
     const printersListVirtDom =
       (undefined === printersList) ? "" :
         printersList.map((printer, index) => (
           <li key={index}> 
             <div className="card" style={{width: "18rem"}}>
               <div className="card-body">
-                <h5 className="card-title">Printer owner info</h5>
-                <h6 className="card-subtitle mb-2 text-muted"> Infos</h6>
-                <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <h5 className="card-title">{`Main printer model: ${(printer.printers.length)?(printer.printers[0].model):("NA")}`}</h5>
+                <h6 className="card-subtitle mb-2 text-muted"> {`Specs: ${(printer.printers.length)?(printer.printers[0].specs):("NA")}`}</h6>
+                <p className="card-text">{`Address: ${printer.address}`}</p>
                 <Link to={{
                   pathname: `/profile/${printer.username}`,
                   state: {
