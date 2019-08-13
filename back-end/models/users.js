@@ -1,7 +1,7 @@
 const setupDB = require('../database/db');
-const bcrypt = require('bcrypt');
+//const bcrypt = require('bcrypt');
 
-const saltRounds = 10;
+//const saltRounds = 10;
 
 ///////////////////////////////////////////////////////////////////////////////
 module.exports = async function setupUserModel(config) {
@@ -38,7 +38,7 @@ module.exports = async function setupUserModel(config) {
   });
 
   User.pre('save', function (next) {
-    this.private.password = bcrypt.hashSync(this.private.password, saltRounds);
+    //this.private.password = bcrypt.hashSync(this.private.password, saltRounds);
     next();
   })
 

@@ -51,6 +51,7 @@ module.exports = class dbLogic {
   async registerHandler(user) {
     console.log(`register user:${JSON.stringify(user)}`);
 
+    const saltRounds = 10;
     let username = "";
     let boAlreadyInDB = true;
 
@@ -65,7 +66,7 @@ module.exports = class dbLogic {
           const userNew = new this.UserModel({
             private: {
               email: user.email,
-              password: user.password,
+              password: bcrypt.hashSync(user.password, saltRounds),
               fullname: "",
               birth: "",
               defaultPrinterInfo: {
@@ -101,6 +102,13 @@ module.exports = class dbLogic {
   async loginHandler(user) {
     console.log(`login user:${JSON.stringify(user)}`);
     let genToken = "";
+
+    await this.UserModel.find({}, (e, usersDB) => {
+      if (e) console.log;
+      if(usersDB){
+        console.log(usersDB);
+      }
+    })
 
     await this.UserModel.findOne({
       "public.username": user.username
@@ -171,7 +179,10 @@ module.exports = class dbLogic {
       if (userDB){
         console.log("[logic] user:", userDB);
         userDB.public = user.public;
-        userDB.private = user.private;
+        userDB.private.fullname = user.private.fullname;
+        userDB.private.birth = user.private.birth;
+        userDB.private.defaultPrinterInfo = user.private.defaultPrinterInfo;
+
         await userDB.save()
         .then(() => {
               console.log(`User updated`);
