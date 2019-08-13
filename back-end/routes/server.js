@@ -2,6 +2,8 @@
 const express = require("express");
 // Require body-parser package for json body parsing
 const bodyParser = require("body-parser");
+// Require CORS package
+const cors = require("cors");
 
 // Require database logic module to handle db operations
 const dbLogic = require("../database/logic");
@@ -17,13 +19,7 @@ const dbLogicObj = new dbLogic();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 // Add header for for 'Access-Control-Allow-Origin
-app.use("*", (req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET", "POST", "PUT");
-  res.header("Access-Control-Allow-Headers",
-    "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-  next();
-})
+app.use(cors());
 
 ///////////////////////////////////////////////////////////////////////////////
 // Get method
@@ -86,11 +82,11 @@ app.post("/profile", async (req, res) => {
 ///////////////////////////////////////////////////////////////////////////////
 // Put method - Profile
 app.put("/profile", async (req, res) => {
-  console.log("PUT: profile operation");
+  //console.log("PUT: profile operation:", req.body);
 
   await dbLogicObj.updateProfileInfoHandler(req.body)
 
-  console.log(`[server] Put profile: ${JSON.stringify(userInfo)}`);
+  console.log(`[server] Put profile`);
 
   res.status(200).send('Updated');
 })

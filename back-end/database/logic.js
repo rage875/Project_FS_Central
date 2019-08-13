@@ -164,15 +164,24 @@ module.exports = class dbLogic {
 
   ///////////////////////////////////////////////////////////////////////////////
   async updateProfileInfoHandler(user) {
-    this.UserModel.update(
-      {"private.email": user.email},
-      {"$set": { "public": user.public},
-       //"$set": { "private": user.private},
-      },
-      (e, item) => {
-        console.log(item);
+    await this.UserModel.findOne({
+      "public.username": user.public.username
+    }, async (e, userDB) => {
+      if (e) console.log;
+      if (userDB){
+        console.log("[logic] user:", userDB);
+        userDB.public = user.public;
+        userDB.private = user.private;
+        await userDB.save()
+        .then(() => {
+              console.log(`User updated`);
+            })
+            .catch(e => console.error("Error:", e));
+      } else {
+        console.log("user not found");
       }
-    )
+    })
+      .catch(e => { console.log(e) });
   }
 
 }
