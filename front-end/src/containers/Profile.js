@@ -77,7 +77,8 @@ class Profile extends Component {
 
     if (updateState) {
       this.setState({
-        tmpState
+        public: tmpState.public,
+        private: tmpState.private,
       });
     }
   }
@@ -100,7 +101,7 @@ class Profile extends Component {
       },
       body: JSON.stringify(user)
     })
-      .then(res => res.json())
+      .then(res => console.log(res))
       .catch(error => console.error("Error:", error));
   }
 
@@ -156,7 +157,8 @@ class Profile extends Component {
     tmpState.public.printers.push(printer);
 
     this.setState({
-      tmpState
+      public: tmpState.public,
+      private: tmpState.private,
     });
   }
 
@@ -169,7 +171,8 @@ class Profile extends Component {
       tmpState.public.printers.pop();
 
       this.setState({
-        tmpState
+        public: tmpState.public,
+        private: tmpState.private,
       });
     }
   }
@@ -278,9 +281,16 @@ class Profile extends Component {
     let profileInfoVirtDom = [];
 
     if ("" !== profileInfo.public.username) {
-      let parsedProfileInfo = [
-        ...this.parseProfilePrivateInfo(profileInfo), ...this.parseProfilePublicInfo(profileInfo)
-      ];
+      let parsedProfileInfo = []
+      if (("private" === this.props.location.state.accessType)) {
+        parsedProfileInfo = [
+          ...this.parseProfilePrivateInfo(profileInfo), ...this.parseProfilePublicInfo(profileInfo)
+        ];
+      } else {
+        parsedProfileInfo = [
+          ...this.parseProfilePublicInfo(profileInfo)
+        ];
+      }
 
       profileInfoVirtDom = this.createProfileFormInfo(parsedProfileInfo);
     }
